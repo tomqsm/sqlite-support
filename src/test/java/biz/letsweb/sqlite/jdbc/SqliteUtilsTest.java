@@ -1,9 +1,8 @@
 package biz.letsweb.sqlite.jdbc;
 
-import biz.letsweb.sqlite.SqliteUtils;
-import biz.letsweb.sqlite.FulljarRuntimeException;
-import biz.letsweb.sqlite.ScriptAction;
-import java.io.File;
+import biz.letsweb.sqlite.TimingDb;
+import biz.letsweb.sqlite.SqlSupportApi;
+import static biz.letsweb.sqlite.SqlSupportApi.SQL_CREATE;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,8 +13,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.junit.Ignore;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 public class SqliteUtilsTest {
 
@@ -23,34 +22,41 @@ public class SqliteUtilsTest {
     }
 
     @Test
-    public void testLoadSqliteDriver() {
-        System.out.println("loadSqliteDriver");
-        assertNotNull(SqliteUtils.getDataSource(ScriptAction.CREATE.getSqlFile()));
-    }
-
-    @Test
     public void setupTables() {
-        final String sql = SqliteUtils.loadSql(new File("src/main/resources/sql/create.sql"));
-        SqliteUtils.setupTables(sql);
+        TimingDb timingDb = new TimingDb();
+        timingDb.create();
     }
 
     @Test
-    public void testDate() {
-        String sql = "SELECT change_time, last_modified FROM datetest where id=1;";
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        try (final Connection con = SqliteUtils
-                .getDataSource(new File("timing.db"))
-                .getConnection();
+    public void testDate() throws SQLException {
+
+        String sql = "DROP TABLE IF EXISTS datetest;"
+                + "CREATE TABLE datetest ("
+                + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + "change_time DATE,"
+                + "last_modified DATETIME"
+                + ");";
+        try (
+                final Connection con = TimingDb.getDataSource().getConnection();
+                final Statement statement = con.createStatement();) {
+            statement.executeUpdate(sql);
+        }
+
+        sql = "INSERT INTO datetest VALUES (null, 1385502209380, datetime('now'));";
+        try (
+                final Connection con = TimingDb.getDataSource().getConnection();
+                final Statement statement = con.createStatement();) {
+            statement.executeUpdate(sql);
+        }
+
+        sql = "SELECT change_time, last_modified FROM datetest where id=1;";
+//        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        try (final Connection con = TimingDb.getDataSource().getConnection();
                 final Statement stmt = con.createStatement();
-                final ResultSet rs = stmt.executeQuery(sql);
-                ) {
-                Date date = df.parse(rs.getString("change_time"));
-            System.out.println(date);
-            System.out.println(rs.getString("last_modified"));
-        } catch (final SQLException ex) {
-            throw new FulljarRuntimeException(String.format("Sql %s could not be executed: %s.", sql, ex.getMessage()), ex);
-        } catch (ParseException ex) {
-            Logger.getLogger(SqliteUtilsTest.class.getName()).log(Level.SEVERE, null, ex);
+                final ResultSet rs = stmt.executeQuery(sql);) {
+//            Date date = df.parse(rs.getString("change_time"));
+            System.out.println("changetime: " + new Date(rs.getLong("change_time")));
+            System.out.println("lastmodified: " + rs.getString("last_modified"));
         }
     }
 }
