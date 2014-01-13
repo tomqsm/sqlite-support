@@ -8,7 +8,7 @@ import java.sql.Statement;
  *
  * @author Tomasz
  */
-public class TimeProjectTaskTable {
+public class TaskTable {
 
     private static final String createTableSql = "DROP TABLE IF EXISTS datetest;"
             + "CREATE TABLE datetest ("
@@ -20,7 +20,7 @@ public class TimeProjectTaskTable {
 
     public void createTable() throws SQLException {
         try (
-                Connection con = TimingDb.getDataSource().getConnection();
+                Connection con = TimingSqlite.getTimingDbSingleton().getDataSource().getConnection();
                 Statement statement = con.createStatement();) {
             statement.executeUpdate(createTableSql);
         }
@@ -28,7 +28,7 @@ public class TimeProjectTaskTable {
 
     public void dropTable() throws SQLException {
         try (
-                Connection con = TimingDb.getDataSource().getConnection();
+                Connection con = TimingSqlite.getTimingDbSingleton().getDataSource().getConnection();
                 Statement statement = con.createStatement();) {
             statement.executeUpdate(dropTableSql);
         }

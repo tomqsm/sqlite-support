@@ -15,12 +15,25 @@ import org.slf4j.LoggerFactory;
 import org.sqlite.SQLiteConfig;
 import org.sqlite.javax.SQLiteConnectionPoolDataSource;
 
-public class TimingDb implements SqlSupportApi {
+public class TimingSqlite {
 
-    private final static Logger LOG = LoggerFactory.getLogger(TimingDb.class);
+    private final static Logger LOG = LoggerFactory.getLogger(TimingSqlite.class);
     private static SQLiteConnectionPoolDataSource DATA_SOURCE = null;
+    private static File TIMING_DB_FILE = new File("timing.sqlite");
+    private static File SQL_CREATE = new File("src/main/resources/sql/timingdb/dev.sql");
+    private static TimingSqlite timingDb = null;
 
-    public static synchronized DataSource getDataSource() {
+    private TimingSqlite(){
+    }
+    
+    public static TimingSqlite getTimingDbSingleton() {
+        if (timingDb == null) {
+            timingDb = new TimingSqlite();
+        }
+        return timingDb;
+    }
+
+    public DataSource getDataSource() {
         if (DATA_SOURCE == null) {
             final SQLiteConfig config = new SQLiteConfig();
             config.enforceForeignKeys(true);
@@ -28,8 +41,7 @@ public class TimingDb implements SqlSupportApi {
             config.setDateClass("INTEGER");
 //            config.setDateStringFormat("yyyy-MM-dd HH:mm");
             DATA_SOURCE = new SQLiteConnectionPoolDataSource();
-            if(SqlSupportApi.TIMING_DB_FILE.exists())
-            DATA_SOURCE.setUrl("jdbc:sqlite:" + SqlSupportApi.TIMING_DB_FILE.getName());
+                DATA_SOURCE.setUrl("jdbc:sqlite:" + TIMING_DB_FILE.getName());
             DATA_SOURCE.setConfig(config);
             LOG.trace("Using a new data source.");
             return DATA_SOURCE;
@@ -58,7 +70,6 @@ public class TimingDb implements SqlSupportApi {
         return sql;
     }
 
-    @Override
     public void create() {
         LOG.trace("Setting up tables.");
         try (final Connection connection = getDataSource().getConnection();
@@ -70,7 +81,6 @@ public class TimingDb implements SqlSupportApi {
         }
     }
 
-    @Override
     public void delete() {
         if (TIMING_DB_FILE.exists()) {
             TIMING_DB_FILE.delete();

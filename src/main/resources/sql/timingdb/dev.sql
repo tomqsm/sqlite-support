@@ -1,0 +1,9 @@
+DROP TABLE IF EXISTS projects;
+
+
+CREATE TABLE projects (
+id INTEGER PRIMARY KEY AUTOINCREMENT, 
+name VARCHAR(25)
+);
+
+INSERT INTO projects VALUES (null, 'tomtom');

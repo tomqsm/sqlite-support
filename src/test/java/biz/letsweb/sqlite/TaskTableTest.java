@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package biz.letsweb.sqlite;
 
 import org.junit.After;
@@ -11,13 +7,10 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- *
- * @author Tomasz
- */
-public class TimeProjectTaskTableTest {
 
-    public TimeProjectTaskTableTest() {
+public class TaskTableTest {
+
+    public TaskTableTest() {
     }
 
     @BeforeClass
@@ -39,7 +32,7 @@ public class TimeProjectTaskTableTest {
     @Test
     public void testCreateTable() throws Exception {
         System.out.println("createTable");
-        TimeProjectTaskTable instance = new TimeProjectTaskTable();
+        TaskTable instance = new TaskTable();
         instance.createTable();
         instance.dropTable();
     }
