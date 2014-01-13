@@ -2,6 +2,7 @@ package biz.letsweb.sqlite.dao;
 
 import biz.letsweb.sqlite.TimingSqlite;
 import biz.letsweb.sqlite.mvc.model.Project;
+import biz.letsweb.sqlite.mvc.model.Stage;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,12 +14,12 @@ import java.util.logging.Logger;
  *
  * @author Tomasz
  */
-public class ProjectDaoImpl implements ProjectDao {
+public class StageDaoImpl implements StageDao<Stage>{
 
     @Override
-    public Project findByName(String projectName) {
-//        String query = "select name from activities p where p.name=?;";
-        String query = "SELECT a.name FROM activities a JOIN types t ON a.id=t.id WHERE t.id=(SELECT id FROM types WHERE name='project') AND a.name=?;";
+    public Stage findByName(String stageName) {
+        Stage s = new Stage();
+        String query = "select name from stages s where s.name=?;";
         Project p = new Project();
         Connection con = null;
         PreparedStatement stmt = null;
@@ -26,7 +27,7 @@ public class ProjectDaoImpl implements ProjectDao {
         try {
             con = TimingSqlite.getTimingDbSingleton().getDataSource().getConnection();
             stmt = con.prepareStatement(query);
-            stmt.setString(1, projectName);
+            stmt.setString(1, stageName);
             rs = stmt.executeQuery();
             p.setName(rs.getString("name"));
         } catch (SQLException ex) {
@@ -46,7 +47,7 @@ public class ProjectDaoImpl implements ProjectDao {
                 Logger.getLogger(ProjectDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        return p;
+        return s;
     }
-
+    
 }

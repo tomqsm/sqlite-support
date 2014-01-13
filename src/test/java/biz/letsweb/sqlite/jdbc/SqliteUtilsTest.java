@@ -19,7 +19,7 @@ public class SqliteUtilsTest {
     public void setupTables() throws SQLException, ApplicationException {
         TimingSqlite timingDb = TimingSqlite.getTimingDbSingleton();
         timingDb.create();
-        String sql = "SELECT * FROM projects p WHERE p.id=1;";
+        String sql = "SELECT * FROM activities p WHERE p.id=1;";
         try (final Connection con = TimingSqlite.getTimingDbSingleton().getDataSource().getConnection();
                 final Statement stmt = con.createStatement();
                 final ResultSet rs = stmt.executeQuery(sql);) {

@@ -1,8 +1,5 @@
 package biz.letsweb.sqlite.mvc.model;
 
-import biz.letsweb.sqlite.mvc.model.Project;
-import biz.letsweb.sqlite.mvc.model.Stages;
-import biz.letsweb.sqlite.mvc.model.Activities;
 import static org.fest.assertions.Assertions.assertThat;
 import org.junit.After;
 import org.junit.Assert;

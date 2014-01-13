@@ -33,4 +33,9 @@ public class ProjectControllerTest {
         Assert.assertEquals("tomtom", project.getName());
     }
 
+    @Test
+    public void youCanAddStagesToProject() {
+
+    }
+
 }

@@ -1,9 +1,23 @@
-DROP TABLE IF EXISTS projects;
+DROP TABLE IF EXISTS activities;
+DROP TABLE IF EXISTS types;
 
-
-CREATE TABLE projects (
-id INTEGER PRIMARY KEY AUTOINCREMENT, 
+CREATE TABLE types (
+id INTEGER PRIMARY KEY AUTOINCREMENT,
 name VARCHAR(25)
 );
 
-INSERT INTO projects VALUES (null, 'tomtom');
+CREATE TABLE activities (
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+type_id INTEGER,
+name VARCHAR(25),
+FOREIGN KEY(type_id) REFERENCES types(id)
+);
+
+INSERT INTO types VALUES (null, 'project');
+INSERT INTO types VALUES (null, 'stage');
+INSERT INTO types VALUES (null, 'story');
+INSERT INTO types VALUES (null, 'task');
+
+INSERT INTO activities VALUES (null, 1, 'tomtom');
+
+SELECT a.name FROM activities a JOIN types t ON a.id=t.id WHERE t.id=(SELECT id FROM types WHERE name='project') AND a.name='tomtom';
