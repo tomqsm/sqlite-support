@@ -6,9 +6,18 @@ package biz.letsweb.sqlite.mvc.model;
  */
 public abstract class Activity {
 
+    int id;
     String name;
     String description;
     ChangeLog changeLog;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -17,5 +26,5 @@ public abstract class Activity {
     public void setName(String name) {
         this.name = name;
     }
-    
+
 }

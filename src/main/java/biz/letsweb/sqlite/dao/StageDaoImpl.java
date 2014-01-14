@@ -18,9 +18,8 @@ public class StageDaoImpl implements StageDao {
 
     @Override
     public Stage findByName(String stageName) {
-        Stage s = new Stage();
-        String query = "select name from stages s where s.name=?;";
-        Project p = new Project();
+        String query = "SELECT a.id, a.name FROM activities a JOIN types t ON a.type_id=t.id WHERE t.id=(SELECT id FROM types WHERE name='stage') AND a.name=?;";
+        Stage stage = new Stage();
         Connection con = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -29,7 +28,8 @@ public class StageDaoImpl implements StageDao {
             stmt = con.prepareStatement(query);
             stmt.setString(1, stageName);
             rs = stmt.executeQuery();
-            p.setName(rs.getString("name"));
+            stage.setId(rs.getInt(1));
+            stage.setName(rs.getString(2));
         } catch (SQLException ex) {
             Logger.getLogger(ProjectDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -47,7 +47,7 @@ public class StageDaoImpl implements StageDao {
                 Logger.getLogger(ProjectDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        return s;
+        return stage;
     }
 
     @Override
@@ -56,6 +56,18 @@ public class StageDaoImpl implements StageDao {
         Connection con = TimingSqlite.getTimingDbSingleton().getDataSource().getConnection();
         PreparedStatement ps = con.prepareStatement(insert);
         ps.setString(1, stage.getName());
+        ps.executeUpdate();
+        ps.close();
+        con.close();
+    }
+
+    @Override
+    public void update(Stage stage) throws Exception {
+        String update = "UPDATE activities SET name=? WHERE id=?;";
+        Connection con = TimingSqlite.getTimingDbSingleton().getDataSource().getConnection();
+        PreparedStatement ps = con.prepareStatement(update);
+        ps.setString(1, stage.getName());
+        ps.setInt(2, stage.getId());
         ps.executeUpdate();
         ps.close();
         con.close();

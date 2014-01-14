@@ -18,7 +18,7 @@ public class ProjectDaoImpl implements ProjectDao {
     @Override
     public Project findByName(String projectName) {
 //        String query = "select name from activities p where p.name=?;";
-        String query = "SELECT a.name FROM activities a JOIN types t ON a.type_id=t.id WHERE t.id=(SELECT id FROM types WHERE name='project') AND a.name=?;";
+        String query = "SELECT a.id, a.name FROM activities a JOIN types t ON a.type_id=t.id WHERE t.id=(SELECT id FROM types WHERE name='project') AND a.name=?;";
         Project p = new Project();
         Connection con = null;
         PreparedStatement stmt = null;
@@ -28,7 +28,8 @@ public class ProjectDaoImpl implements ProjectDao {
             stmt = con.prepareStatement(query);
             stmt.setString(1, projectName);
             rs = stmt.executeQuery();
-            p.setName(rs.getString("name"));
+            p.setId(rs.getInt(1));
+            p.setName(rs.getString(2));
         } catch (SQLException ex) {
             Logger.getLogger(ProjectDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -55,6 +56,18 @@ public class ProjectDaoImpl implements ProjectDao {
         Connection con = TimingSqlite.getTimingDbSingleton().getDataSource().getConnection();
         PreparedStatement ps = con.prepareStatement(insert);
         ps.setString(1, project.getName());
+        ps.executeUpdate();
+        ps.close();
+        con.close();
+    }
+
+    @Override
+    public void update(Project project) throws Exception {
+        String update = "UPDATE activities SET name=? WHERE id=?;";
+        Connection con = TimingSqlite.getTimingDbSingleton().getDataSource().getConnection();
+        PreparedStatement ps = con.prepareStatement(update);
+        ps.setString(1, project.getName());
+        ps.setInt(2, project.getId());
         ps.executeUpdate();
         ps.close();
         con.close();
