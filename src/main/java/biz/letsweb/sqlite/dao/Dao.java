@@ -7,4 +7,5 @@ package biz.letsweb.sqlite.dao;
 public interface Dao<T> {
 
     T findByName(String entityName);
+    void save(T object) throws Exception;
 }

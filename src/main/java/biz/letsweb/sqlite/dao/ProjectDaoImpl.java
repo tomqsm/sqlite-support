@@ -18,7 +18,7 @@ public class ProjectDaoImpl implements ProjectDao {
     @Override
     public Project findByName(String projectName) {
 //        String query = "select name from activities p where p.name=?;";
-        String query = "SELECT a.name FROM activities a JOIN types t ON a.id=t.id WHERE t.id=(SELECT id FROM types WHERE name='project') AND a.name=?;";
+        String query = "SELECT a.name FROM activities a JOIN types t ON a.type_id=t.id WHERE t.id=(SELECT id FROM types WHERE name='project') AND a.name=?;";
         Project p = new Project();
         Connection con = null;
         PreparedStatement stmt = null;
@@ -49,4 +49,14 @@ public class ProjectDaoImpl implements ProjectDao {
         return p;
     }
 
+    @Override
+    public void save(Project project) throws SQLException {
+        String insert = "INSERT INTO activities VALUES (null, 1, ?);";
+        Connection con = TimingSqlite.getTimingDbSingleton().getDataSource().getConnection();
+        PreparedStatement ps = con.prepareStatement(insert);
+        ps.setString(1, project.getName());
+        ps.executeUpdate();
+        ps.close();
+        con.close();
+    }
 }

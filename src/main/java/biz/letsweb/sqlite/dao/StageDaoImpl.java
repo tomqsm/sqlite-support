@@ -14,7 +14,7 @@ import java.util.logging.Logger;
  *
  * @author Tomasz
  */
-public class StageDaoImpl implements StageDao<Stage>{
+public class StageDaoImpl implements StageDao {
 
     @Override
     public Stage findByName(String stageName) {
@@ -49,5 +49,16 @@ public class StageDaoImpl implements StageDao<Stage>{
         }
         return s;
     }
-    
+
+    @Override
+    public void save(Stage stage) throws SQLException {
+        String insert = "INSERT INTO activities VALUES (null, (SELECT id FROM types WHERE name='stage'), ?);";
+        Connection con = TimingSqlite.getTimingDbSingleton().getDataSource().getConnection();
+        PreparedStatement ps = con.prepareStatement(insert);
+        ps.setString(1, stage.getName());
+        ps.executeUpdate();
+        ps.close();
+        con.close();
+    }
+
 }

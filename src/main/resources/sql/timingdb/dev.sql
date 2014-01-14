@@ -20,4 +20,6 @@ INSERT INTO types VALUES (null, 'task');
 
 INSERT INTO activities VALUES (null, 1, 'tomtom');
 
-SELECT a.name FROM activities a JOIN types t ON a.id=t.id WHERE t.id=(SELECT id FROM types WHERE name='project') AND a.name='tomtom';
+-- SELECT a.name FROM activities a JOIN types t ON a.type_id=t.id WHERE t.id=(SELECT id FROM types WHERE name='project') AND a.name='letsweb';
+-- INSERT INTO activities VALUES (null, (SELECT id FROM types WHERE name='stage'), 'documentation');
+-- INSERT INTO activities VALUES (null, 1, 'letsweb');
