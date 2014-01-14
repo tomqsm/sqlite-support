@@ -2,6 +2,7 @@ package biz.letsweb.sqlite.dao;
 
 import biz.letsweb.sqlite.TimingSqlite;
 import biz.letsweb.sqlite.mvc.model.Project;
+import org.fest.assertions.Assertions;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -54,5 +55,15 @@ public class ProjectDaoImplTest {
         Assert.assertEquals(1, project.getId());
         project.setName("tt");
         projectDao.update(project);
+    }
+
+    @Test
+    public void findsAllProjects() throws Exception {
+        final Iterable<Project> projects = projectDao.findAll();
+        Assertions.assertThat(projects).hasSize(1);
+        Project project = new Project();
+        project.setName("new project");
+        projectDao.save(project);
+        Assertions.assertThat(projectDao.findAll()).hasSize(2);
     }
 }

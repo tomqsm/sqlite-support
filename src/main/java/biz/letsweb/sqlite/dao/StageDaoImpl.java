@@ -3,10 +3,13 @@ package biz.letsweb.sqlite.dao;
 import biz.letsweb.sqlite.TimingSqlite;
 import biz.letsweb.sqlite.mvc.model.Project;
 import biz.letsweb.sqlite.mvc.model.Stage;
+import biz.letsweb.sqlite.mvc.model.Stages;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -71,6 +74,22 @@ public class StageDaoImpl implements StageDao {
         ps.executeUpdate();
         ps.close();
         con.close();
+    }
+
+    @Override
+    public Stages findAll() throws Exception {
+        String query = "select * from activities WHERE type_id = (SELECT id FROM types WHERE name='stage');";
+        Connection con = TimingSqlite.getTimingDbSingleton().getDataSource().getConnection();
+        PreparedStatement ps = con.prepareStatement(query);
+        final ResultSet rs = ps.executeQuery();
+        Stages stages = new Stages();
+        Stage stage = new Stage();
+        while (rs.next()) {
+            stage.setId(rs.getInt(1));
+            stage.setName(rs.getString(2));
+            stages.add(stage);
+        }
+        return stages;
     }
 
 }

@@ -13,7 +13,11 @@ public class Project extends Activity {
         stages = new Stages();
     }
 
-    Stages getStages() {
+    public void setStages(Stages stages) {
+        this.stages = stages;
+    }
+
+    public Stages getStages() {
         return stages;
     }
 

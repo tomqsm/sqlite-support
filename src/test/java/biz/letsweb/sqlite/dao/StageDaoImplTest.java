@@ -56,5 +56,13 @@ public class StageDaoImplTest {
         s = stageDao.findByName("robienie dziórek");
         assertEquals("robienie dziórek", s.getName());
     }
+    
+    @Test
+    public void findsAllStages() throws Exception{
+        Stage stage = new Stage();
+        stage.setName("test stage");
+        stageDao.save(stage);
+        assertEquals(3, stageDao.findAll().size());
+    }
 
 }

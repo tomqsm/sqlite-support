@@ -26,11 +26,12 @@ public class ProjectControllerTest {
     }
 
     @Test
-    public void canInitialiseProjectFromDataBase() {
+    public void canInitialiseProjectFromDataBase() throws Exception {
         TimingSqlite timingDb = TimingSqlite.getTimingDbSingleton();
         timingDb.create();
         Project project = pc.initializeProject("tomtom");
         Assert.assertEquals("tomtom", project.getName());
+        System.out.println(project.getStages().size());
     }
 
     @Test

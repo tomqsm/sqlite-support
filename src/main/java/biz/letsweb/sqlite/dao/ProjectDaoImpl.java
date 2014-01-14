@@ -2,10 +2,14 @@ package biz.letsweb.sqlite.dao;
 
 import biz.letsweb.sqlite.TimingSqlite;
 import biz.letsweb.sqlite.mvc.model.Project;
+import biz.letsweb.sqlite.mvc.model.Stage;
+import biz.letsweb.sqlite.mvc.model.Stages;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -71,5 +75,21 @@ public class ProjectDaoImpl implements ProjectDao {
         ps.executeUpdate();
         ps.close();
         con.close();
+    }
+
+    @Override
+    public List<Project> findAll() throws Exception {
+        String query = "select * from activities WHERE type_id = (SELECT id FROM types WHERE name='project');";
+        Connection con = TimingSqlite.getTimingDbSingleton().getDataSource().getConnection();
+        PreparedStatement ps = con.prepareStatement(query);
+        final ResultSet rs = ps.executeQuery();
+        List<Project> projects = new ArrayList<>();
+        Project project = new Project();
+        while (rs.next()) {
+            project.setId(rs.getInt(1));
+            project.setName(rs.getString(2));
+            projects.add(project);
+        }
+        return projects;
     }
 }
