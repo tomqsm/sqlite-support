@@ -2,9 +2,9 @@ package biz.letsweb.sqlite.dao;
 
 import biz.letsweb.sqlite.TimingSqlite;
 import biz.letsweb.sqlite.mvc.model.Project;
+import biz.letsweb.sqlite.mvc.model.Stage;
 import org.fest.assertions.Assertions;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Assert;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
@@ -40,7 +40,7 @@ public class ProjectDaoImplTest {
     }
 
     @Test
-    public void testSave() throws Exception {
+    public void savesProject() throws Exception {
         Project project = new Project();
         project.setName("letsweb");
         projectDao.save(project);
@@ -65,5 +65,17 @@ public class ProjectDaoImplTest {
         project.setName("new project");
         projectDao.save(project);
         Assertions.assertThat(projectDao.findAll()).hasSize(2);
+    }
+
+    @Test
+    public void canCaveStageToProject() throws Exception {
+        //TODO not working cos you need to save type in types table
+        //before refering it to a stage in activities table
+        Project p = new Project();
+        p.setName("kumazin");
+        projectDao.save(p);
+        Stage s = new Stage();
+        s.setName("kumzin stage");
+        projectDao.saveStageToProject("kumazin", s);
     }
 }

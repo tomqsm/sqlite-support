@@ -3,7 +3,6 @@ package biz.letsweb.sqlite.dao;
 import biz.letsweb.sqlite.TimingSqlite;
 import biz.letsweb.sqlite.mvc.model.Project;
 import biz.letsweb.sqlite.mvc.model.Stage;
-import biz.letsweb.sqlite.mvc.model.Stages;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -90,6 +89,26 @@ public class ProjectDaoImpl implements ProjectDao {
             project.setName(rs.getString(2));
             projects.add(project);
         }
+        rs.close();
+        ps.close();
+        con.close();
         return projects;
+    }
+
+    @Override
+    public void saveStageToProject(final String projectName, final Stage stage) throws SQLException, Exception {
+        StageDao stageDao = new StageDaoImpl();
+        stageDao.save(stage);
+        Stage savedStage = stageDao.findByName(stage.getName());
+        //TODO not working cos you need to save type in types table
+        //before refering it to a stage in activities table
+        String query2 = "INSERT INTO activities_types VALUES (null, (SELECT id FROM activities WHERE name=?), ?);";
+        Connection con = TimingSqlite.getTimingDbSingleton().getDataSource().getConnection();
+        PreparedStatement ps = con.prepareStatement(query2);
+        ps.setString(1, projectName);
+        ps.setInt(2, savedStage.getId());
+        ps.executeUpdate();
+        ps.close();
+        con.close();
     }
 }

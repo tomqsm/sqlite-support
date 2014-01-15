@@ -20,6 +20,10 @@ public class Project extends Activity {
     public Stages getStages() {
         return stages;
     }
+    
+    public void addStage(Stage stage){
+        stages.add(stage);
+    }
 
     Activities getActivities() {
         return activities;

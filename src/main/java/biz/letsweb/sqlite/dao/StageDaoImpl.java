@@ -8,8 +8,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -90,6 +88,14 @@ public class StageDaoImpl implements StageDao {
             stages.add(stage);
         }
         return stages;
+    }
+
+    @Override
+    public Stages findByProject(Project project) {
+        //TODO not implemented an assosiation table needed
+       String findByProject = "";
+       Stages stages = null;
+       return stages;
     }
 
 }
