@@ -10,7 +10,7 @@ import java.sql.Statement;
  */
 public class TaskTable {
 
-    private static final String createTableSql = "DROP TABLE IF EXISTS datetest;"
+    private static final String CREATE_TABLE_SQL = "DROP TABLE IF EXISTS datetest;"
             + "CREATE TABLE datetest ("
             + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
             + "change_time DATE,"
@@ -20,15 +20,15 @@ public class TaskTable {
 
     public void createTable() throws SQLException {
         try (
-                Connection con = TimingSqlite.getTimingDbSingleton().getDataSource().getConnection();
+                Connection con = SqliteUtils.getDataSource().getConnection();
                 Statement statement = con.createStatement();) {
-            statement.executeUpdate(createTableSql);
+            statement.executeUpdate(CREATE_TABLE_SQL);
         }
     }
 
     public void dropTable() throws SQLException {
         try (
-                Connection con = TimingSqlite.getTimingDbSingleton().getDataSource().getConnection();
+                Connection con = SqliteUtils.getDataSource().getConnection();
                 Statement statement = con.createStatement();) {
             statement.executeUpdate(dropTableSql);
         }

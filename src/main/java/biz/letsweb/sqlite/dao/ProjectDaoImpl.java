@@ -1,6 +1,6 @@
 package biz.letsweb.sqlite.dao;
 
-import biz.letsweb.sqlite.TimingSqlite;
+import biz.letsweb.sqlite.SqliteUtils;
 import biz.letsweb.sqlite.mvc.model.Project;
 import biz.letsweb.sqlite.mvc.model.Stage;
 import java.sql.Connection;
@@ -27,7 +27,7 @@ public class ProjectDaoImpl implements ProjectDao {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            con = TimingSqlite.getTimingDbSingleton().getDataSource().getConnection();
+            con = SqliteUtils.getDataSource().getConnection();
             stmt = con.prepareStatement(query);
             stmt.setString(1, projectName);
             rs = stmt.executeQuery();
@@ -56,7 +56,7 @@ public class ProjectDaoImpl implements ProjectDao {
     @Override
     public void save(Project project) throws SQLException {
         String insert = "INSERT INTO activities VALUES (null, 1, ?);";
-        Connection con = TimingSqlite.getTimingDbSingleton().getDataSource().getConnection();
+        Connection con = SqliteUtils.getDataSource().getConnection();
         PreparedStatement ps = con.prepareStatement(insert);
         ps.setString(1, project.getName());
         ps.executeUpdate();
@@ -67,7 +67,7 @@ public class ProjectDaoImpl implements ProjectDao {
     @Override
     public void update(Project project) throws Exception {
         String update = "UPDATE activities SET name=? WHERE id=?;";
-        Connection con = TimingSqlite.getTimingDbSingleton().getDataSource().getConnection();
+        Connection con = SqliteUtils.getDataSource().getConnection();
         PreparedStatement ps = con.prepareStatement(update);
         ps.setString(1, project.getName());
         ps.setInt(2, project.getId());
@@ -78,13 +78,14 @@ public class ProjectDaoImpl implements ProjectDao {
 
     @Override
     public List<Project> findAll() throws Exception {
-        String query = "select * from activities WHERE type_id = (SELECT id FROM types WHERE name='project');";
-        Connection con = TimingSqlite.getTimingDbSingleton().getDataSource().getConnection();
+        String query = "select id, name from activities WHERE type_id = (SELECT id FROM types WHERE name='project');";
+        Connection con = SqliteUtils.getDataSource().getConnection();
         PreparedStatement ps = con.prepareStatement(query);
         final ResultSet rs = ps.executeQuery();
         List<Project> projects = new ArrayList<>();
-        Project project = new Project();
+        Project project = null;
         while (rs.next()) {
+            project = new Project();
             project.setId(rs.getInt(1));
             project.setName(rs.getString(2));
             projects.add(project);
@@ -103,7 +104,7 @@ public class ProjectDaoImpl implements ProjectDao {
         //TODO not working cos you need to save type in types table
         //before refering it to a stage in activities table
         String query2 = "INSERT INTO activities_types VALUES (null, (SELECT id FROM activities WHERE name=?), ?);";
-        Connection con = TimingSqlite.getTimingDbSingleton().getDataSource().getConnection();
+        Connection con = SqliteUtils.getDataSource().getConnection();
         PreparedStatement ps = con.prepareStatement(query2);
         ps.setString(1, projectName);
         ps.setInt(2, savedStage.getId());

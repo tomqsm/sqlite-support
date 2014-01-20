@@ -1,7 +1,3 @@
-DROP TABLE IF EXISTS activities;
-DROP TABLE IF EXISTS types;
-DROP TABLE IF EXISTS activities_types;
-
 CREATE TABLE types (
 id INTEGER PRIMARY KEY AUTOINCREMENT,
 name VARCHAR(25)
@@ -20,6 +16,7 @@ INSERT INTO types VALUES (null, 'story');
 INSERT INTO types VALUES (null, 'task');
 
 INSERT INTO activities VALUES (null, 1, 'tomtom');
+INSERT INTO activities VALUES (null, 1, 'letsweb');
 INSERT INTO activities VALUES (null, 2, 'documentation');
 INSERT INTO activities VALUES (null, 2, 'implementation');
 INSERT INTO activities VALUES (null, 2, 'design');
@@ -33,6 +30,7 @@ FOREIGN KEY(type_id) REFERENCES types(id)
 );
 
 INSERT INTO activities_types VALUES (null, (SELECT id FROM activities WHERE name='tomtom'), 2);
+INSERT INTO activities_types VALUES (null, (SELECT id FROM activities WHERE name='letsweb'), 2);
 -- INSERT INTO activities_types VALUES (null, 1, 3);
 -- INSERT INTO activities_types VALUES (null, 1, 4);
 

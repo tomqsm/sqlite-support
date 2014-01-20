@@ -1,6 +1,6 @@
 package biz.letsweb.sqlite.dao;
 
-import biz.letsweb.sqlite.TimingSqlite;
+import biz.letsweb.sqlite.SqliteUtils;
 import biz.letsweb.sqlite.mvc.model.Project;
 import biz.letsweb.sqlite.mvc.model.Stage;
 import biz.letsweb.sqlite.mvc.model.Stages;
@@ -21,8 +21,8 @@ public class StageDaoImplTest {
 
     @BeforeClass
     public static void setUpClass() {
-        TimingSqlite.getTimingDbSingleton().drop("activities_types", "activities", "types");
-        TimingSqlite.getTimingDbSingleton().create();
+        SqliteUtils.drop("activities_types", "activities", "types");
+        SqliteUtils.create();
     }
 
     @Before

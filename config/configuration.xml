@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<config>
+<properties>
+        <color>blue</color>
+        <logging>${log.level}</logging>
+        <time>286742953282360</time>
+        <dbFileName>timing.db</dbFileName>
+    </properties>
+<sql>
+        <fromFile>
+            <createTablesSql>src/main/resources/sql/timingdb/dev_create.sql</createTablesSql>
+        </fromFile>
+        <dropTableIfExists>DROP TABLE IF EXISTS %s</dropTableIfExists>
+    </sql>
+</config>

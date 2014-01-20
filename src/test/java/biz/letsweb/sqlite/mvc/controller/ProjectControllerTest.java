@@ -1,6 +1,6 @@
 package biz.letsweb.sqlite.mvc.controller;
 
-import biz.letsweb.sqlite.TimingSqlite;
+import biz.letsweb.sqlite.SqliteUtils;
 import biz.letsweb.sqlite.dao.ProjectDaoImpl;
 import biz.letsweb.sqlite.mvc.model.Project;
 import org.junit.After;
@@ -19,8 +19,8 @@ public class ProjectControllerTest {
 
     @BeforeClass
     public static void setUpClass() {
-        TimingSqlite.getTimingDbSingleton().drop("activities_types", "activities", "types");
-//        TimingSqlite.getTimingDbSingleton().create();
+        SqliteUtils.drop("activities_types", "activities", "types");
+//        SqliteUtils.getTimingDbSingleton().create();
     }
 
     @Before
@@ -34,8 +34,7 @@ public class ProjectControllerTest {
 
     @Test
     public void canInitialiseProjectFromDataBase() throws Exception {
-        TimingSqlite timingDb = TimingSqlite.getTimingDbSingleton();
-        timingDb.create();
+        SqliteUtils.create();
         Project project = pc.initializeProject("tomtom");
         Assert.assertEquals("tomtom", project.getName());
         System.out.println(project.getStages().size());

@@ -1,6 +1,6 @@
 package biz.letsweb.sqlite.dao;
 
-import biz.letsweb.sqlite.TimingSqlite;
+import biz.letsweb.sqlite.SqliteUtils;
 import biz.letsweb.sqlite.mvc.model.Project;
 import biz.letsweb.sqlite.mvc.model.Stage;
 import org.fest.assertions.Assertions;
@@ -21,8 +21,8 @@ public class ProjectDaoImplTest {
 
     @BeforeClass
     public static void setUpClass() {
-        TimingSqlite.getTimingDbSingleton().drop("activities_types", "activities", "types");
-        TimingSqlite.getTimingDbSingleton().create();
+        SqliteUtils.drop("activities_types", "activities", "types");
+        SqliteUtils.create();
     }
 
     @Before
@@ -61,11 +61,11 @@ public class ProjectDaoImplTest {
     @Test
     public void findsAllProjects() throws Exception {
         final Iterable<Project> projects = projectDao.findAll();
-        Assertions.assertThat(projects).hasSize(1);
+        Assertions.assertThat(projects).hasSize(2);
         Project project = new Project();
         project.setName("new project");
         projectDao.save(project);
-        Assertions.assertThat(projectDao.findAll()).hasSize(2);
+        Assertions.assertThat(projectDao.findAll()).hasSize(3);
     }
 
 //    @Test

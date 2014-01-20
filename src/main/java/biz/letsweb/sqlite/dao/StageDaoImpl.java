@@ -1,6 +1,6 @@
 package biz.letsweb.sqlite.dao;
 
-import biz.letsweb.sqlite.TimingSqlite;
+import biz.letsweb.sqlite.SqliteUtils;
 import biz.letsweb.sqlite.mvc.model.Project;
 import biz.letsweb.sqlite.mvc.model.Stage;
 import biz.letsweb.sqlite.mvc.model.Stages;
@@ -25,7 +25,7 @@ public class StageDaoImpl implements StageDao {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            con = TimingSqlite.getTimingDbSingleton().getDataSource().getConnection();
+            con = SqliteUtils.getDataSource().getConnection();
             stmt = con.prepareStatement(query);
             stmt.setString(1, stageName);
             rs = stmt.executeQuery();
@@ -54,7 +54,7 @@ public class StageDaoImpl implements StageDao {
     @Override
     public void save(Stage stage) throws SQLException {
         String insert = "INSERT INTO activities VALUES (null, (SELECT id FROM types WHERE name='stage'), ?);";
-        Connection con = TimingSqlite.getTimingDbSingleton().getDataSource().getConnection();
+        Connection con = SqliteUtils.getDataSource().getConnection();
         PreparedStatement ps = con.prepareStatement(insert);
         ps.setString(1, stage.getName());
         ps.executeUpdate();
@@ -65,7 +65,7 @@ public class StageDaoImpl implements StageDao {
     @Override
     public void update(Stage stage) throws Exception {
         String update = "UPDATE activities SET name=? WHERE id=?;";
-        Connection con = TimingSqlite.getTimingDbSingleton().getDataSource().getConnection();
+        Connection con = SqliteUtils.getDataSource().getConnection();
         PreparedStatement ps = con.prepareStatement(update);
         ps.setString(1, stage.getName());
         ps.setInt(2, stage.getId());
@@ -77,7 +77,7 @@ public class StageDaoImpl implements StageDao {
     @Override
     public Stages findAll() throws Exception {
         String query = "select * from activities WHERE type_id = (SELECT id FROM types WHERE name='stage');";
-        Connection con = TimingSqlite.getTimingDbSingleton().getDataSource().getConnection();
+        Connection con = SqliteUtils.getDataSource().getConnection();
         PreparedStatement ps = con.prepareStatement(query);
         final ResultSet rs = ps.executeQuery();
         Stages stages = new Stages();
