@@ -21,6 +21,7 @@ public class StageDaoImplTest {
 
     @BeforeClass
     public static void setUpClass() {
+        TimingSqlite.getTimingDbSingleton().drop("activities_types", "activities", "types");
         TimingSqlite.getTimingDbSingleton().create();
     }
 
@@ -58,17 +59,17 @@ public class StageDaoImplTest {
         s = stageDao.findByName("robienie dziórek");
         assertEquals("robienie dziórek", s.getName());
     }
-    
+
     @Test
-    public void findsAllStages() throws Exception{
+    public void findsAllStages() throws Exception {
         Stage stage = new Stage();
         stage.setName("test stage");
         stageDao.save(stage);
-        assertEquals(3, stageDao.findAll().size());
+        assertEquals(5, stageDao.findAll().size());
     }
-    
+
 //    @Test
-    public void findStagesByProject(){
+    public void findStagesByProject() {
         ProjectDao projectDao = new ProjectDaoImpl();
         final Project project = projectDao.findByName("tomtom");
         final Stages stages = stageDao.findByProject(project);

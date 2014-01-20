@@ -6,6 +6,7 @@ import biz.letsweb.sqlite.mvc.model.Project;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -15,6 +16,12 @@ import org.junit.Test;
 public class ProjectControllerTest {
 
     private ProjectController pc;
+
+    @BeforeClass
+    public static void setUpClass() {
+        TimingSqlite.getTimingDbSingleton().drop("activities_types", "activities", "types");
+//        TimingSqlite.getTimingDbSingleton().create();
+    }
 
     @Before
     public void setUp() {

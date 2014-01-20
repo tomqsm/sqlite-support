@@ -20,12 +20,13 @@ public class TimingSqlite {
     private final static Logger LOG = LoggerFactory.getLogger(TimingSqlite.class);
     private static SQLiteConnectionPoolDataSource DATA_SOURCE = null;
     private static File TIMING_DB_FILE = new File("timing.sqlite");
-    private static File SQL_CREATE = new File("src/main/resources/sql/timingdb/dev.sql");
+    private static File SQL_CREATE = new File("src/main/resources/sql/timingdb/dev_create.sql");
+    private File SQL_DROP = new File("src/main/resources/sql/timingdb/dev_drop.sql");
     private static TimingSqlite timingDb = null;
 
-    private TimingSqlite(){
+    private TimingSqlite() {
     }
-    
+
     public static TimingSqlite getTimingDbSingleton() {
         if (timingDb == null) {
             timingDb = new TimingSqlite();
@@ -41,7 +42,7 @@ public class TimingSqlite {
             config.setDateClass("INTEGER");
 //            config.setDateStringFormat("yyyy-MM-dd HH:mm");
             DATA_SOURCE = new SQLiteConnectionPoolDataSource();
-                DATA_SOURCE.setUrl("jdbc:sqlite:" + TIMING_DB_FILE.getName());
+            DATA_SOURCE.setUrl("jdbc:sqlite:" + TIMING_DB_FILE.getName());
             DATA_SOURCE.setConfig(config);
             LOG.trace("Using a new data source.");
             return DATA_SOURCE;
@@ -68,6 +69,19 @@ public class TimingSqlite {
             throw new RuntimeException("Couldn't load sql script. ", ex);
         }
         return sql;
+    }
+
+    public void drop(final String... tables) {
+        LOG.trace("Setting up tables.");
+        try (final Connection connection = getDataSource().getConnection();
+                Statement statement = connection.createStatement()) {
+            statement.setQueryTimeout(30);  // set timeout to 30 sec.
+            for (String table : tables) {
+                statement.execute("DROP TABLE IF EXISTS " + table + ";");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Couldn't drop tables. " + e.getMessage(), e);
+        }
     }
 
     public void create() {
