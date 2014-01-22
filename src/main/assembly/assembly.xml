@@ -32,6 +32,16 @@
             <outputDirectory>/</outputDirectory>
             <filtered>true</filtered>
         </file>
+        <file>
+            <source>config/configuration.xml</source>
+            <outputDirectory>/config</outputDirectory>
+            <filtered>true</filtered>
+        </file>
+        <file>
+            <source>timing.db</source>
+            <outputDirectory>/</outputDirectory>
+            <filtered>false</filtered>
+        </file>
     </files>
     <dependencySets>
         <dependencySet>
