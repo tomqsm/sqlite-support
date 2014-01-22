@@ -93,9 +93,9 @@ public class StageDaoImpl implements StageDao {
     @Override
     public Stages findByProject(Project project) {
         //TODO not implemented an assosiation table needed
-       String findByProject = "";
-       Stages stages = null;
-       return stages;
+        String findByProject = "";
+        Stages stages = null;
+        return stages;
     }
 
 }

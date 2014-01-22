@@ -2,3 +2,4 @@
 *.sqlite
 src/main/resources/application.properties
 /target/
+/nb-configuration.xml

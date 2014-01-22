@@ -1,6 +1,6 @@
 package biz.letsweb.sqlite;
 
-public interface Validable <T>{
+public interface Validable<T> {
 
-    void validate(T model) throws Exception;
+  void validate(T model) throws Exception;
 }

@@ -12,45 +12,43 @@ import org.slf4j.LoggerFactory;
 
 public class SqliteSupportMain {
 
-    private static final Logger LOG = LoggerFactory.getLogger(SqliteSupportMain.class);
+  private static final Logger LOG = LoggerFactory.getLogger(SqliteSupportMain.class);
 
-    public static void main(String... args) throws Exception {
-        PropertyConfigurator.configure("./config/log4j.properties");
-        LOG.info("Main started");
-        LOG.trace("Main started");
-        Scanner in = new Scanner(System.in);
-        boolean run = true;
-        System.out.println("type your command ...");
-//        SqliteUtils.drop("activities_types", "activities", "types");
-//        SqliteUtils.create();
-        while (run) {
-            String command = in.nextLine();
-            if (command.equalsIgnoreCase("projects")) {
-                final List<Project> projects = new ProjectDaoImpl().findAll();
-                for (Project p : projects) {
-                    System.out.println(p.getId() + ")" + p.getName());
-                }
-            }
-            if(command.startsWith("add project")){
-                final String[] splited = StringUtils.split(command);
-                ProjectDao projectDao = new ProjectDaoImpl();
-                Project newProject = new Project();
-                newProject.setName(splited[splited.length-1]);
-                projectDao.save(newProject);
-                System.out.println("Project " + newProject.getName() + " has been added.");
-            }
-            if(command.startsWith("remove project")){
-                final String[] splited = StringUtils.split(command);
-                ProjectDao projectDao = new ProjectDaoImpl();
-                Project newProject = new Project();
-                newProject.setName(splited[splited.length-1]);
-            }
-            if (command.equals("stages")) {
-                System.out.println("stages: 4");
-            }
-            if (command.equals("exit")) {
-                run = false;
-            }
+  public static void main(String... args) throws Exception {
+    PropertyConfigurator.configure("./config/log4j.properties");
+    LOG.info("Main started");
+    LOG.trace("Main started");
+    Scanner in = new Scanner(System.in);
+    boolean run = true;
+    System.out.println("type your command ...");
+    while (run) {
+      String command = in.nextLine();
+      if (command.equalsIgnoreCase("projects")) {
+        final List<Project> projects = new ProjectDaoImpl().findAll();
+        for (Project p : projects) {
+          System.out.println(p.getId() + ")" + p.getName());
         }
+      }
+      if (command.startsWith("add project")) {
+        final String[] splited = StringUtils.split(command);
+        ProjectDao projectDao = new ProjectDaoImpl();
+        Project newProject = new Project();
+        newProject.setName(splited[splited.length - 1]);
+        projectDao.save(newProject);
+        System.out.println("Project " + newProject.getName() + " has been added.");
+      }
+      if (command.startsWith("remove project")) {
+        final String[] splited = StringUtils.split(command);
+        ProjectDao projectDao = new ProjectDaoImpl();
+        Project newProject = new Project();
+        newProject.setName(splited[splited.length - 1]);
+      }
+      if (command.equals("stages")) {
+        System.out.println("stages: 4");
+      }
+      if (command.equals("exit")) {
+        run = false;
+      }
     }
+  }
 }

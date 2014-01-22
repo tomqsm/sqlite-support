@@ -1,6 +1,5 @@
 package biz.letsweb.sqlite.dao;
 
-
 public class TypeDaoImpl implements TypeDao {
 
     @Override
@@ -22,5 +21,5 @@ public class TypeDaoImpl implements TypeDao {
     public Iterable findAll() throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
 }
