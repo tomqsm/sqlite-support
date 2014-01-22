@@ -14,10 +14,10 @@
             </includes>
         </fileSet>
         <fileSet>
-            <directory>src/main/resources/sql</directory>
-            <outputDirectory>/sql</outputDirectory>
+            <directory>src/main/resources</directory>
+            <outputDirectory>/config</outputDirectory>
             <includes>
-                <include>*.sql</include>
+                <include>log4j.properties</include>
             </includes>
         </fileSet>
     </fileSets>
@@ -39,7 +39,7 @@
         </file>
         <file>
             <source>timing.db</source>
-            <outputDirectory>/</outputDirectory>
+            <outputDirectory>/db</outputDirectory>
             <filtered>false</filtered>
         </file>
     </files>

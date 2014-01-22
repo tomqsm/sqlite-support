@@ -30,7 +30,7 @@ public class SqliteUtils {
             config.setDateClass("INTEGER");
 //            config.setDateStringFormat("yyyy-MM-dd HH:mm");
             DATA_SOURCE = new SQLiteConnectionPoolDataSource();
-            DATA_SOURCE.setUrl("jdbc:sqlite:" + DB_FILE.getName());
+            DATA_SOURCE.setUrl("jdbc:sqlite:" + DB_FILE);
             DATA_SOURCE.setConfig(config);
             LOG.trace("Using a new data source.");
             return DATA_SOURCE;

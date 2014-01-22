@@ -6,6 +6,7 @@ import biz.letsweb.sqlite.mvc.model.Project;
 import java.util.List;
 import java.util.Scanner;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.PropertyConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,7 +15,9 @@ public class SqliteSupportMain {
     private static final Logger LOG = LoggerFactory.getLogger(SqliteSupportMain.class);
 
     public static void main(String... args) throws Exception {
+        PropertyConfigurator.configure("./config/log4j.properties");
         LOG.info("Main started");
+        LOG.trace("Main started");
         Scanner in = new Scanner(System.in);
         boolean run = true;
         System.out.println("type your command ...");
@@ -34,6 +37,7 @@ public class SqliteSupportMain {
                 Project newProject = new Project();
                 newProject.setName(splited[splited.length-1]);
                 projectDao.save(newProject);
+                System.out.println("Project " + newProject.getName() + " has been added.");
             }
             if(command.startsWith("remove project")){
                 final String[] splited = StringUtils.split(command);
