@@ -38,7 +38,7 @@
             <filtered>true</filtered>
         </file>
         <file>
-            <source>timing.db</source>
+            <source>db/timing.db</source>
             <outputDirectory>/db</outputDirectory>
             <filtered>false</filtered>
         </file>
