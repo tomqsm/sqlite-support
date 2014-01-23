@@ -83,6 +83,15 @@ public class ConfigProviderTest {
   }
 
   @Test
+  public void findsSqlStringForFindProjectByName() {
+    ConfigProvider configProvider = new ConfigProvider();
+    configProvider.initialiseXMLConfiguration("config/configuration.xml");
+    final String sql = configProvider.getXMLConfiguration().getString("sql/project/findByName");
+    assertNotNull(sql);
+    System.out.println(sql);
+  }
+
+  @Test
   public void readsSqlContentFromFileViaConfiguration() {
     Configuration.CREATE_TABLES_SQL.toString();
   }

@@ -27,13 +27,6 @@ public enum Configuration {
       XML_CONFIG.setProperty("properties/color", value);
       XML_CONFIG.save();
     }
-
-    @Override
-    public List<Object> getValues() throws ConfigurationException {
-      throw new UnsupportedOperationException("Not supported yet."); // To change body of generated
-      // methods, choose Tools |
-      // Templates.
-    }
   },
   TIME {
     @Override
@@ -45,16 +38,7 @@ public enum Configuration {
     @Override
     public void setValue(String value) throws ConfigurationException {
       XML_CONFIG.setProperty("properties/time", value);
-      XML_CONFIG.save();
     }
-
-    @Override
-    public List<Object> getValues() throws ConfigurationException {
-      throw new UnsupportedOperationException("Not supported yet."); // To change body of generated
-      // methods, choose Tools |
-      // Templates.
-    }
-
   },
   CREATE_TABLES_SQL {
     @Override
@@ -69,65 +53,25 @@ public enum Configuration {
       }
       return createSql;
     }
-
-    @Override
-    public void setValue(String value) throws ConfigurationException {
-      throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public List<Object> getValues() throws ConfigurationException {
-      throw new UnsupportedOperationException("Not supported yet.");
-    }
   },
   DROP_TABLE_IF_EXISTS {
     @Override
     public String toString() {
       return XML_CONFIG.getString("sql/dropTableIfExists");
     }
-
-    @Override
-    public void setValue(String value) throws ConfigurationException {
-      throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public List<Object> getValues() throws ConfigurationException {
-      throw new UnsupportedOperationException("Not supported yet."); // To change body of generated
-      // methods, choose Tools |
-      // Templates.
-    }
-
   },
   DB_FILE_NAME {
     @Override
     public String toString() {
       return XML_CONFIG.getString("properties/dbFileName");
     }
-
-    @Override
-    public void setValue(String value) throws ConfigurationException {
-      throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public List<Object> getValues() throws ConfigurationException {
-      throw new UnsupportedOperationException("Not supported yet.");
-    }
-
   },
   TABLE_NAMES {
-
-    @Override
-    public void setValue(String value) throws ConfigurationException {
-      throw new UnsupportedOperationException("Not supported yet.");
-    }
 
     @Override
     public List<Object> getValues() throws ConfigurationException {
       return XML_CONFIG.getList("sql/tables/table");
     }
-
   };
 
   static {
@@ -138,7 +82,11 @@ public enum Configuration {
   private static XMLConfiguration XML_CONFIG;
   private static final int FIRST = 0;
 
-  public abstract void setValue(final String value) throws ConfigurationException;
+  public void setValue(final String value) throws ConfigurationException {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
 
-  public abstract List<Object> getValues() throws ConfigurationException;
+  public List<Object> getValues() throws ConfigurationException {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
 }

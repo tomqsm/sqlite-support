@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <config>
-<properties>
+    <properties>
         <color>blue</color>
         <logging>${log.level}</logging>
-        <time>98714868968097</time>
+        <time>103158273838263</time>
         <dbFileName>db/timing.db</dbFileName>
     </properties>
-<sql>
+    <sql>
         <tables>
             <table>activities_types</table>
             <table>activities</table>
@@ -17,5 +17,11 @@
             <createTablesSql>src/main/resources/sql/timingdb/dev_create.sql</createTablesSql>
         </fromFile>
         <dropTableIfExists>DROP TABLE IF EXISTS %s</dropTableIfExists>
+        <project>
+            <findByName>SELECT a.id, a.name FROM activities a JOIN types t ON a.type_id=t.id WHERE t.id=(SELECT id FROM types WHERE name='project') AND a.name=?;</findByName>
+            <findAll>select id, name from activities WHERE type_id = (SELECT id FROM types WHERE name='project');</findAll>
+            <save>INSERT INTO activities VALUES (null, 1, ?)</save>
+            <update>UPDATE activities SET name=? WHERE id=?;</update>
+        </project>
     </sql>
 </config>
