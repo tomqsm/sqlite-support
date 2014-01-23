@@ -1,6 +1,7 @@
 package biz.letsweb.sqlite.jdbc;
 
 import biz.letsweb.sqlite.SqliteUtils;
+import biz.letsweb.sqlite.configuration.Configuration;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,6 +10,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import org.apache.commons.configuration.ConfigurationException;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -16,14 +18,14 @@ import org.slf4j.LoggerFactory;
 
 public class SqliteUtilsTest {
 
-    private final static Logger LOG = LoggerFactory.getLogger(SqliteUtilsTest.class);
+  private final static Logger LOG = LoggerFactory.getLogger(SqliteUtilsTest.class);
 
-    @BeforeClass
-    public static void setUpClass() {
-        SqliteUtils.drop("activities_types", "activities", "types");
-    }
+  @BeforeClass
+  public static void setUpClass() throws ConfigurationException {
+    SqliteUtils.drop(Configuration.TABLE_NAMES.getValues().toArray(new String[] {}));
+  }
 
-    @Test
+  @Test
     public void testDate() throws SQLException, ParseException {
 
         String sql = "DROP TABLE IF EXISTS datetest;"

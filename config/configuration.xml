@@ -3,10 +3,16 @@
 <properties>
         <color>blue</color>
         <logging>${log.level}</logging>
-        <time>16028382458109</time>
+        <time>98714868968097</time>
         <dbFileName>db/timing.db</dbFileName>
     </properties>
 <sql>
+        <tables>
+            <table>activities_types</table>
+            <table>activities</table>
+            <table>types</table>
+            <table>current</table>
+        </tables>
         <fromFile>
             <createTablesSql>src/main/resources/sql/timingdb/dev_create.sql</createTablesSql>
         </fromFile>

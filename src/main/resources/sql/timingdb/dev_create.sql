@@ -10,6 +10,11 @@ name VARCHAR(25),
 FOREIGN KEY(type_id) REFERENCES types(id)
 );
 
+CREATE TABLE current (
+project_id INTEGER,
+FOREIGN KEY(project_id) REFERENCES activities(id)
+);
+
 INSERT INTO types VALUES (null, 'project');
 INSERT INTO types VALUES (null, 'stage');
 INSERT INTO types VALUES (null, 'story');
