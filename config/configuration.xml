@@ -8,20 +8,26 @@
     </properties>
     <sql>
         <tables>
-            <table>activities_types</table>
-            <table>activities</table>
-            <table>types</table>
-            <table>current</table>
+            <table name="at">activities_associations</table>
+            <table name="a">activities</table>
+            <table name="t">types</table>
+            <table name="c">current</table>
         </tables>
         <fromFile>
             <createTablesSql>src/main/resources/sql/timingdb/dev_create.sql</createTablesSql>
         </fromFile>
         <dropTableIfExists>DROP TABLE IF EXISTS %s</dropTableIfExists>
         <project>
-            <findByName>SELECT a.id, a.name FROM activities a JOIN types t ON a.type_id=t.id WHERE t.id=(SELECT id FROM types WHERE name='project') AND a.name=?;</findByName>
+            <findByName>SELECT a.id, a.name FROM ${sql/tables/table[@name='a']} a JOIN types t ON a.type_id=t.id WHERE t.id=(SELECT id FROM types WHERE name='project') AND a.name=?;</findByName>
             <findAll>select id, name from activities WHERE type_id = (SELECT id FROM types WHERE name='project');</findAll>
-            <save>INSERT INTO activities VALUES (null, 1, ?)</save>
+            <save>INSERT INTO activities VALUES (null, (SELECT id FROM types WHERE name='project'), ?)</save>
             <update>UPDATE activities SET name=? WHERE id=?;</update>
         </project>
+        <stage>
+            <findByName>SELECT a.id, a.name FROM activities a JOIN types t ON a.type_id=t.id WHERE t.id=(SELECT id FROM types WHERE name='stage') AND a.name=?;</findByName>
+            <findAll>select id, name from activities WHERE type_id = (SELECT id FROM types WHERE name='stage');</findAll>
+            <save>INSERT INTO activities VALUES (null, (SELECT id FROM types WHERE name='stage'), ?);</save>
+            <update>UPDATE activities SET name=? WHERE id=?;</update>
+        </stage>
     </sql>
 </config>
