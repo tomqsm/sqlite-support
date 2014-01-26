@@ -1,4 +1,4 @@
-package biz.letsweb.sqlite.mvc.model;
+ package biz.letsweb.sqlite.mvc.model;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -9,7 +9,7 @@ import java.util.List;
  * @author Tomasz
  */
 public class Activities <T> implements Iterable<T>{
-        private final List<T> activities;
+    private final List<T> activities;
 
     public Activities() {
         this.activities = new ArrayList<>();
@@ -35,4 +35,9 @@ public class Activities <T> implements Iterable<T>{
     public boolean remove(T stage) {
         return activities.remove(stage);
     }
+
+    public List<T> getAsList() {
+        return activities;
+    }
+    
 }

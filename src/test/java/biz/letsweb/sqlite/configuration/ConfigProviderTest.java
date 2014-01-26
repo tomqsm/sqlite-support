@@ -70,7 +70,7 @@ public class ConfigProviderTest {
     configProvider.initialiseXMLConfiguration("config/configuration.xml");
     final String fileName =
         configProvider.getXMLConfiguration().getString("sql/fromFile/createTablesSql");
-    assertEquals("src/main/resources/sql/timingdb/dev_create.sql", fileName);
+    assertEquals("sql/timingdb/dev_create.sql", fileName);
   }
 
   @Test

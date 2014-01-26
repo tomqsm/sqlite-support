@@ -14,7 +14,7 @@
             <table name="c">current</table>
         </tables>
         <fromFile>
-            <createTablesSql>src/main/resources/sql/timingdb/dev_create.sql</createTablesSql>
+            <createTablesSql>sql/timingdb/dev_create.sql</createTablesSql>
         </fromFile>
         <dropTableIfExists>DROP TABLE IF EXISTS %s</dropTableIfExists>
         <project>
@@ -25,6 +25,7 @@
         </project>
         <stage>
             <findByName>SELECT a.id, a.name FROM activities a JOIN types t ON a.type_id=t.id WHERE t.id=(SELECT id FROM types WHERE name='stage') AND a.name=?;</findByName>
+            <findByProjectName>SELECT a.id, a.name FROM activities a JOIN activities_associations aa ON aa.sub_activity_id = a.id WHERE aa.sub_activity_id IN (SELECT ac.id FROM activities ac WHERE ac.type_id = (SELECT id FROM types WHERE name='stage')) AND aa.activity_id=(SELECT id FROM activities WHERE name=?);</findByProjectName>
             <findAll>select id, name from activities WHERE type_id = (SELECT id FROM types WHERE name='stage');</findAll>
             <save>INSERT INTO activities VALUES (null, (SELECT id FROM types WHERE name='stage'), ?);</save>
             <update>UPDATE activities SET name=? WHERE id=?;</update>

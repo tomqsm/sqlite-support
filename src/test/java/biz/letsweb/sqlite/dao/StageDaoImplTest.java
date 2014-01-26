@@ -2,12 +2,11 @@ package biz.letsweb.sqlite.dao;
 
 import biz.letsweb.sqlite.SqliteUtils;
 import biz.letsweb.sqlite.configuration.Configuration;
-import biz.letsweb.sqlite.mvc.model.Project;
 import biz.letsweb.sqlite.mvc.model.Stage;
 import biz.letsweb.sqlite.mvc.model.Stages;
 import java.sql.SQLException;
 import org.apache.commons.configuration.ConfigurationException;
-import org.fest.assertions.Assertions;
+import static org.fest.assertions.Assertions.assertThat;
 import org.junit.After;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -71,13 +70,12 @@ public class StageDaoImplTest {
     assertEquals(5, stageDao.findAll().size());
   }
 
-  // @Test
-  public void findStagesByProject() throws SQLException {
-    ProjectDao projectDao = new ProjectDaoImpl();
-    final Project project = projectDao.findByName("tomtom");
+   @Test
+  public void findByProjectName() throws SQLException {
     final Stages stages = stageDao.findByProject("tomtom");
     assertNotNull(stages);
-    Assertions.assertThat(stages).hasSize(2);
+    assertThat(stages).hasSize(3);
+    assertThat(stages.get(0).getName()).contains("documentation");
   }
 
 }

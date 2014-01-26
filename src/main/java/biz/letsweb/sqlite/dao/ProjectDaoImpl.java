@@ -1,7 +1,6 @@
 package biz.letsweb.sqlite.dao;
 
 import biz.letsweb.sqlite.SqliteUtils;
-import biz.letsweb.sqlite.configuration.Configuration;
 import biz.letsweb.sqlite.configuration.ProjectSqls;
 import biz.letsweb.sqlite.mvc.model.Project;
 import biz.letsweb.sqlite.mvc.model.Stage;
@@ -18,7 +17,7 @@ import java.util.logging.Logger;
  * 
  * @author Tomasz
  */
-public class ProjectDaoImpl implements ProjectDao {
+public final class ProjectDaoImpl implements ProjectDao {
 
   @Override
   public Project findByName(String projectName) {

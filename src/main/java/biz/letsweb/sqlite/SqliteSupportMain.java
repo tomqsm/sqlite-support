@@ -18,6 +18,7 @@ public class SqliteSupportMain {
     PropertyConfigurator.configure("./config/log4j.properties");
     LOG.info("Main started");
     LOG.trace("Main started");
+    SqliteUtils.create();
     Scanner in = new Scanner(System.in);
     boolean run = true;
     System.out.println("type your command ...");

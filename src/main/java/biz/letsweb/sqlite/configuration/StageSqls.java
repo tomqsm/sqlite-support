@@ -30,6 +30,12 @@ public enum StageSqls implements Sql {
     public String getSql() {
       return XML_CONFIG.getString("sql/stage/update");
     }
+  }, FIND_BY_PROJECT_NAME {
+
+      @Override
+      public String getSql() {
+          return XML_CONFIG.getString("sql/stage/findByProjectName");
+      }
   };
   static {
     ConfigProvider configProvider = new ConfigProvider();

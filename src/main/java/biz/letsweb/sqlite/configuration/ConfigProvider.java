@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Tomasz
  */
-public class ConfigProvider {
+public final class ConfigProvider {
 
   private final Logger LOG = LoggerFactory.getLogger(ConfigProvider.class);
 
