@@ -3,7 +3,7 @@
     <properties>
         <color>blue</color>
         <logging>${log.level}</logging>
-        <time>103158273838263</time>
+        <time>456956531010134</time>
         <dbFileName>db/timing.db</dbFileName>
     </properties>
     <sql>
