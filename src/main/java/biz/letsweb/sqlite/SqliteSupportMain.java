@@ -29,6 +29,7 @@ public class SqliteSupportMain {
     boolean run = true;
     System.out.println("type your command ...");
     while (run) {
+      ProjectDao projectDao = new ProjectDaoImpl();
       String command = in.nextLine();
       if (command.equalsIgnoreCase("projects")) {
         final List<Project> projects = new ProjectDaoImpl().findAll().getAsList();
@@ -38,15 +39,13 @@ public class SqliteSupportMain {
       }
       if (command.startsWith("add project")) {
         final String[] splited = StringUtils.split(command);
-        ProjectDao projectDao = new ProjectDaoImpl();
         Project newProject = new Project();
         newProject.setName(splited[splited.length - 1]);
         projectDao.save(newProject);
         System.out.println("Project " + newProject.getName() + " has been added.");
       }
-      if (command.startsWith("remove project")) {
+      if (command.startsWith("delete project")) {
         final String[] splited = StringUtils.split(command);
-        ProjectDao projectDao = new ProjectDaoImpl();
         Project newProject = new Project();
         newProject.setName(splited[splited.length - 1]);
       }

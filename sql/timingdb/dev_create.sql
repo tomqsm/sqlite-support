@@ -1,7 +1,7 @@
--- DROP TABLE IF EXISTS activities_associations;
--- DROP TABLE IF EXISTS activities;
--- DROP TABLE IF EXISTS types;
--- DROP TABLE IF EXISTS current;
+DROP TABLE IF EXISTS activities_associations;
+DROP TABLE IF EXISTS activities;
+DROP TABLE IF EXISTS types;
+DROP TABLE IF EXISTS current;
 
 CREATE TABLE types (
 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -12,7 +12,7 @@ CREATE TABLE activities (
 id INTEGER PRIMARY KEY AUTOINCREMENT,
 type_id INTEGER,
 name VARCHAR(25),
-FOREIGN KEY(type_id) REFERENCES types(id)
+FOREIGN KEY(type_id) REFERENCES types(id) ON DELETE NO ACTION
 );
 
 CREATE TABLE current (
@@ -52,8 +52,8 @@ CREATE TABLE activities_associations (
 id INTEGER PRIMARY KEY AUTOINCREMENT,
 activity_id INTEGER,
 sub_activity_id INTEGER,
-FOREIGN KEY(activity_id) REFERENCES activities(id)
-FOREIGN KEY(sub_activity_id) REFERENCES activities(id)
+FOREIGN KEY(activity_id) REFERENCES activities(id) ON DELETE CASCADE,
+FOREIGN KEY(sub_activity_id) REFERENCES activities(id) ON DELETE CASCADE
 );
 
 -- associating stages with project
@@ -82,3 +82,6 @@ SELECT a.name FROM activities a JOIN activities_associations aa ON aa.sub_activi
 
 -- find tasks associated with story 'setting-up' (nr 6)
 SELECT a.name FROM activities a JOIN activities_associations aa ON aa.sub_activity_id = a.id WHERE aa.sub_activity_id IN (SELECT a.id FROM activities a WHERE a.type_id = (SELECT id FROM types WHERE name='task')) AND aa.activity_id=6;
+
+-- deleting
+-- DELETE FROM activities WHERE id=1;

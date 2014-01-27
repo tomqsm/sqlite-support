@@ -2,13 +2,9 @@ package biz.letsweb.sqlite.dao;
 
 import biz.letsweb.sqlite.SqliteUtils;
 import biz.letsweb.sqlite.configuration.ProjectSqls;
-import biz.letsweb.sqlite.configuration.StageSqls;
 import biz.letsweb.sqlite.mvc.model.Project;
 import biz.letsweb.sqlite.mvc.model.Projects;
 import biz.letsweb.sqlite.mvc.model.Stage;
-import biz.letsweb.sqlite.mvc.model.Stages;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -26,7 +22,7 @@ public final class ProjectDaoImpl implements ProjectDao {
   }
 
   @Override
-  public Project findByName(String projectName) {
+  public Project findByName(final String projectName) {
     return jdbcTemplate.queryForObject(ProjectSqls.FIND_BY_NAME.getSql(),
         new Object[] {projectName}, new RowMapper<Project>() {
           @Override
@@ -40,12 +36,12 @@ public final class ProjectDaoImpl implements ProjectDao {
   }
 
   @Override
-  public void save(Project project) throws SQLException {
+  public void save(final Project project) throws SQLException {
     jdbcTemplate.update(ProjectSqls.SAVE.getSql(), new Object[] {project.getName()});
   }
 
   @Override
-  public void update(Project project) throws Exception {
+  public void update(final Project project) throws Exception {
     jdbcTemplate.update(ProjectSqls.UPDATE.getSql(),
         new Object[] {project.getName(), project.getId()});
   }
@@ -68,24 +64,15 @@ public final class ProjectDaoImpl implements ProjectDao {
   }
 
   @Override
-  public void saveStageToProject(final String projectName, final Stage stage) throws SQLException,
-      Exception {
-    StageDao stageDao = new StageDaoImpl();
-    stageDao.save(stage);
-    Stage savedStage = stageDao.findByName(stage.getName());
-    // TODO not working cos you need to save type in types table
-    // before refering it to a stage in activities table
-    Connection con = SqliteUtils.getDataSource().getConnection();
-    PreparedStatement ps = con.prepareStatement(ProjectSqls.SAVE.getSql());
-    ps.setString(1, projectName);
-    ps.setInt(2, savedStage.getId());
-    ps.executeUpdate();
-    ps.close();
-    con.close();
+  public void delete(final Project t) {
+    jdbcTemplate.update(ProjectSqls.DELETE.getSql(), new Object[] {t.getId()});
   }
 
   @Override
-  public void delete(Project t) {
-    jdbcTemplate.update(ProjectSqls.DELETE.getSql(), new Object[] {t.getId()});
+  public void associateToProject(final Project project, final Stage stage) {
+    final Project p = findByName(project.getName());
+    final StageDao stageDao = new StageDaoImpl();
+    final Stage s = stageDao.findByName(stage.getName());
+    jdbcTemplate.update(ProjectSqls.ASSOCIATE_STAGE.getSql(), new Object[] {p.getId(), s.getId()});
   }
 }

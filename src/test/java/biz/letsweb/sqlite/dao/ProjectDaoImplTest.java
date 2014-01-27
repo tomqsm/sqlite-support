@@ -78,15 +78,20 @@ public class ProjectDaoImplTest {
     Assertions.assertThat(projectDao.findAll()).hasSize(3);
   }
 
-  // @Test
-  public void canCaveStageToProject() throws Exception {
-    // TODO not working cos you need to save type in types table
-    // before refering it to a stage in activities table
+  @Test
+  public void associateStage() throws Exception {
     Project p = new Project();
     p.setName("kumazin");
     projectDao.save(p);
     Stage s = new Stage();
     s.setName("kumzin stage");
-    projectDao.saveStageToProject("kumazin", s);
+    StageDao stageDao = new StageDaoImpl();
+    stageDao.save(s);
+    projectDao.associateToProject(p, s);
+    // TODO remove project refactor to another method
+    final Project pFromDb = projectDao.findByName(p.getName());
+    final Stage sFromDb = stageDao.findByName(s.getName());
+    stageDao.delete(sFromDb);
+    projectDao.delete(pFromDb);
   }
 }

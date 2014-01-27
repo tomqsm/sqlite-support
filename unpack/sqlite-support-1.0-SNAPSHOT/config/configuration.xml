@@ -22,6 +22,7 @@
             <findAll>select id, name from activities WHERE type_id = (SELECT id FROM types WHERE name='project');</findAll>
             <save>INSERT INTO activities VALUES (null, (SELECT id FROM types WHERE name='project'), ?)</save>
             <update>UPDATE activities SET name=? WHERE id=?;</update>
+            <delete>DELETE FROM activities WHERE id=?</delete>
         </project>
         <stage>
             <findByName>SELECT a.id, a.name FROM activities a JOIN types t ON a.type_id=t.id WHERE t.id=(SELECT id FROM types WHERE name='stage') AND a.name=?;</findByName>
@@ -29,6 +30,7 @@
             <findAll>select id, name from activities WHERE type_id = (SELECT id FROM types WHERE name='stage');</findAll>
             <save>INSERT INTO activities VALUES (null, (SELECT id FROM types WHERE name='stage'), ?);</save>
             <update>UPDATE activities SET name=? WHERE id=?;</update>
+            <delete>DELETE FROM activities WHERE id=?</delete>
         </stage>
     </sql>
 </config>
