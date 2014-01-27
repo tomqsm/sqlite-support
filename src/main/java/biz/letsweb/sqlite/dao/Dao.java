@@ -13,4 +13,6 @@ public interface Dao<T> {
   void update(T object) throws Exception;
 
   Iterable<T> findAll() throws Exception;
+
+  void delete(T t);
 }

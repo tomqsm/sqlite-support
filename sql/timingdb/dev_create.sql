@@ -1,7 +1,7 @@
-DROP TABLE IF EXISTS activities_associations;
-DROP TABLE IF EXISTS activities;
-DROP TABLE IF EXISTS types;
-DROP TABLE IF EXISTS current;
+-- DROP TABLE IF EXISTS activities_associations;
+-- DROP TABLE IF EXISTS activities;
+-- DROP TABLE IF EXISTS types;
+-- DROP TABLE IF EXISTS current;
 
 CREATE TABLE types (
 id INTEGER PRIMARY KEY AUTOINCREMENT,

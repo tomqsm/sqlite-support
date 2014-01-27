@@ -1,8 +1,10 @@
 package biz.letsweb.sqlite;
 
+import biz.letsweb.sqlite.configuration.Configuration;
 import biz.letsweb.sqlite.dao.ProjectDao;
 import biz.letsweb.sqlite.dao.ProjectDaoImpl;
 import biz.letsweb.sqlite.mvc.model.Project;
+import java.io.File;
 import java.util.List;
 import java.util.Scanner;
 import org.apache.commons.lang.StringUtils;
@@ -18,7 +20,11 @@ public class SqliteSupportMain {
     PropertyConfigurator.configure("./config/log4j.properties");
     LOG.info("Main started");
     LOG.trace("Main started");
-    SqliteUtils.create();
+    File f = new File(Configuration.DB_FILE_NAME.toString());
+    if (!f.exists()) {
+
+      SqliteUtils.create();
+    }
     Scanner in = new Scanner(System.in);
     boolean run = true;
     System.out.println("type your command ...");

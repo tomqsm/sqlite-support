@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import org.apache.commons.configuration.ConfigurationException;
 import static org.fest.assertions.Assertions.assertThat;
 import org.junit.After;
+import org.junit.AfterClass;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
@@ -27,6 +28,9 @@ public class StageDaoImplTest {
     SqliteUtils.drop(Configuration.TABLE_NAMES.getValues().toArray(new String[] {}));
     SqliteUtils.create();
   }
+
+  @AfterClass
+  public static void tearDownClass() {}
 
   @Before
   public void setUp() {
@@ -51,6 +55,7 @@ public class StageDaoImplTest {
     stageDao.save(stage);
     stage = stageDao.findByName("test stage");
     assertEquals("test stage", stage.getName());
+    stageDao.delete(stage);
   }
 
   @Test
@@ -67,10 +72,10 @@ public class StageDaoImplTest {
     Stage stage = new Stage();
     stage.setName("test stage");
     stageDao.save(stage);
-    assertEquals(5, stageDao.findAll().size());
+    assertEquals(4, stageDao.findAll().size());
   }
 
-   @Test
+  @Test
   public void findByProjectName() throws SQLException {
     final Stages stages = stageDao.findByProject("tomtom");
     assertNotNull(stages);

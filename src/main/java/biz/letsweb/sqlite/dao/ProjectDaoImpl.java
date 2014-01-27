@@ -108,4 +108,9 @@ public final class ProjectDaoImpl implements ProjectDao {
     ps.close();
     con.close();
   }
+
+  @Override
+  public void delete(Project t) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
 }

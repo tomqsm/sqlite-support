@@ -20,6 +20,13 @@
                 <include>log4j.properties</include>
             </includes>
         </fileSet>
+        <fileSet>
+            <directory>db</directory>
+            <outputDirectory>/db</outputDirectory>
+            <excludes>
+                <exclude>*</exclude>
+            </excludes>
+        </fileSet>
     </fileSets>
     <files>
         <file>
@@ -36,11 +43,6 @@
             <source>config/configuration.xml</source>
             <outputDirectory>/config</outputDirectory>
             <filtered>true</filtered>
-        </file>
-        <file>
-            <source>db/timing.db</source>
-            <outputDirectory>/db</outputDirectory>
-            <filtered>false</filtered>
         </file>
         <file>
             <source>sql/timingdb/dev_create.sql</source>

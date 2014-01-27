@@ -29,7 +29,6 @@
             <findAll>select id, name from activities WHERE type_id = (SELECT id FROM types WHERE name='stage');</findAll>
             <save>INSERT INTO activities VALUES (null, (SELECT id FROM types WHERE name='stage'), ?);</save>
             <update>UPDATE activities SET name=? WHERE id=?;</update>
-            <delete>DELETE FROM activities WHERE id=?</delete>
         </stage>
     </sql>
 </config>

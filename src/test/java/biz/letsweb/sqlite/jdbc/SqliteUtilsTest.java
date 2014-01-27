@@ -11,6 +11,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import org.apache.commons.configuration.ConfigurationException;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -25,7 +26,12 @@ public class SqliteUtilsTest {
     SqliteUtils.drop(Configuration.TABLE_NAMES.getValues().toArray(new String[] {}));
   }
 
-  @Test
+  @AfterClass
+  public static void tearDownClass() {
+    // SqliteUtils.delete();
+  }
+
+  @Test 
     public void testDate() throws SQLException, ParseException {
 
         String sql = "DROP TABLE IF EXISTS datetest;"

@@ -7,6 +7,7 @@ import biz.letsweb.sqlite.mvc.model.Stage;
 import org.apache.commons.configuration.ConfigurationException;
 import org.fest.assertions.Assertions;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
@@ -26,6 +27,9 @@ public class ProjectDaoImplTest {
     SqliteUtils.drop(Configuration.TABLE_NAMES.getValues().toArray(new String[] {}));
     SqliteUtils.create();
   }
+
+  @AfterClass
+  public static void tearDownClass() {}
 
   @Before
   public void setUp() {

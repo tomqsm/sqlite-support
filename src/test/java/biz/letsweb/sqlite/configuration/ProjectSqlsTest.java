@@ -1,5 +1,6 @@
 package biz.letsweb.sqlite.configuration;
 
+import biz.letsweb.sqlite.SqliteUtils;
 import org.fest.assertions.Assertions;
 import static org.fest.assertions.Assertions.assertThat;
 import org.junit.After;

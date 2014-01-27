@@ -8,102 +8,79 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 
 /**
- *
+ * 
  * @author Tomasz
  */
 public final class StageDaoImpl implements StageDao {
+  private JdbcTemplate jdbcTemplate;
 
-    @Override
-    public Stage findByName(String stageName) {
-        Stage stage = new Stage();
-        Connection con = null;
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-        try {
-            con = SqliteUtils.getDataSource().getConnection();
-            stmt = con.prepareStatement(StageSqls.FIND_BY_NAME.getSql());
-            stmt.setString(1, stageName);
-            rs = stmt.executeQuery();
-            stage.setId(rs.getInt(1));
-            stage.setName(rs.getString(2));
-        } catch (SQLException ex) {
-            Logger.getLogger(ProjectDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (stmt != null) {
-                    stmt.close();
-                }
-                if (con != null) {
-                    con.close();
-                }
-            } catch (SQLException ex) {
-                Logger.getLogger(ProjectDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        return stage;
+  public StageDaoImpl() {
+    jdbcTemplate = new JdbcTemplate(SqliteUtils.getDataSource());
+  }
+
+  @Override
+  public Stage findByName(String stageName) {
+    return jdbcTemplate.queryForObject(StageSqls.FIND_BY_NAME.getSql(), new Object[] {stageName},
+        new RowMapper<Stage>() {
+          @Override
+          public Stage mapRow(ResultSet rs, int i) throws SQLException {
+            Stage s = new Stage();
+            s.setId(rs.getInt(1));
+            s.setName(rs.getString(2));
+            return s;
+          }
+        });
+  }
+
+  @Override
+  public void save(Stage stage) throws SQLException {
+    jdbcTemplate.update(StageSqls.SAVE.getSql(), new Object[] {stage.getName()});
+  }
+
+  @Override
+  public void update(Stage stage) throws Exception {
+    jdbcTemplate.update(StageSqls.UPDATE.getSql(), new Object[] {stage.getName(), stage.getId()});
+  }
+
+  @Override
+  public Stages findAll() throws Exception {
+    Connection con = SqliteUtils.getDataSource().getConnection();
+    PreparedStatement ps = con.prepareStatement(StageSqls.FIND_ALL.getSql());
+    final ResultSet rs = ps.executeQuery();
+    Stages stages = new Stages();
+    Stage stage = new Stage();
+    while (rs.next()) {
+      stage.setId(rs.getInt(1));
+      stage.setName(rs.getString(2));
+      stages.add(stage);
     }
+    return stages;
+  }
 
-    @Override
-    public void save(Stage stage) throws SQLException {
-        String insert
-                = "INSERT INTO activities VALUES (null, (SELECT id FROM types WHERE name='stage'), ?);";
-        Connection con = SqliteUtils.getDataSource().getConnection();
-        PreparedStatement ps = con.prepareStatement(StageSqls.SAVE.getSql());
-        ps.setString(1, stage.getName());
-        ps.executeUpdate();
-        ps.close();
-        con.close();
-    }
+  @Override
+  public Stages findByProject(String projectName) {
+    final Stages ss = new Stages();
+    jdbcTemplate.query(StageSqls.FIND_BY_PROJECT_NAME.getSql(), new Object[] {projectName},
+        new RowMapper<Stage>() {
 
-    @Override
-    public void update(Stage stage) throws Exception {
-        String update = "UPDATE activities SET name=? WHERE id=?;";
-        Connection con = SqliteUtils.getDataSource().getConnection();
-        PreparedStatement ps = con.prepareStatement(update);
-        ps.setString(1, stage.getName());
-        ps.setInt(2, stage.getId());
-        ps.executeUpdate();
-        ps.close();
-        con.close();
-    }
+          @Override
+          public Stage mapRow(ResultSet rs, int i) throws SQLException {
+            Stage s = new Stage();
+            s.setId(rs.getInt(1));
+            s.setName(rs.getString(2));
+            ss.add(s);
+            return s;
+          }
+        });
+    return ss;
+  }
 
-    @Override
-    public Stages findAll() throws Exception {
-        Connection con = SqliteUtils.getDataSource().getConnection();
-        PreparedStatement ps = con.prepareStatement(StageSqls.FIND_ALL.getSql());
-        final ResultSet rs = ps.executeQuery();
-        Stages stages = new Stages();
-        Stage stage = new Stage();
-        while (rs.next()) {
-            stage.setId(rs.getInt(1));
-            stage.setName(rs.getString(2));
-            stages.add(stage);
-        }
-        return stages;
-    }
-
-    @Override
-    public Stages findByProject(String projectName) throws SQLException {
-        Connection con = SqliteUtils.getDataSource().getConnection();
-        PreparedStatement ps = con.prepareStatement(StageSqls.FIND_BY_PROJECT_NAME.getSql());
-        ps.setString(1, projectName);
-        final ResultSet rs = ps.executeQuery();
-        Stages stages = new Stages();
-        Stage stage = null;
-        while (rs.next()) {
-            stage = new Stage();
-            stage.setId(rs.getInt(1));
-            stage.setName(rs.getString(2));
-            stages.add(stage);
-        }
-        return stages;
-    }
-
+  @Override
+  public void delete(Stage stage) {
+    jdbcTemplate.update(StageSqls.DELETE.getSql(), new Object[] {stage.getId()});
+  }
 }

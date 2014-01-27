@@ -2,7 +2,6 @@ package biz.letsweb.sqlite.dao;
 
 import biz.letsweb.sqlite.mvc.model.Stage;
 import biz.letsweb.sqlite.mvc.model.Stages;
-import java.sql.SQLException;
 
 /**
  * 
@@ -17,5 +16,5 @@ public interface StageDao extends Dao<Stage> {
   @Override
   Stages findAll() throws Exception;
 
-  Stages findByProject(String projectName) throws SQLException;
+  Stages findByProject(String projectName);
 }
