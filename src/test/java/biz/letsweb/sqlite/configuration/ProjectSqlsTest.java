@@ -35,7 +35,7 @@ public class ProjectSqlsTest {
   @Test
   public void testValues() {
     ProjectSqls[] result = ProjectSqls.values();
-    assertThat(result).hasSize(4);
+    assertThat(result).hasSize(5);
     final ProjectSqls valueOf = ProjectSqls.valueOf("FIND_ALL");
     assertThat(valueOf).isEqualTo(ProjectSqls.FIND_ALL);
   }

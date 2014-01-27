@@ -30,6 +30,13 @@ public enum ProjectSqls implements Sql {
     public String getSql() {
       return XML_CONFIG.getString("sql/project/update");
     }
+  },
+  DELETE {
+
+    @Override
+    public String getSql() {
+      return XML_CONFIG.getString("sql/project/delete");
+    }
   };
   static {
     ConfigProvider configProvider = new ConfigProvider();

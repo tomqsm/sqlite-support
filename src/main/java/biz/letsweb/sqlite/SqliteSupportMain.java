@@ -31,7 +31,7 @@ public class SqliteSupportMain {
     while (run) {
       String command = in.nextLine();
       if (command.equalsIgnoreCase("projects")) {
-        final List<Project> projects = new ProjectDaoImpl().findAll();
+        final List<Project> projects = new ProjectDaoImpl().findAll().getAsList();
         for (Project p : projects) {
           System.out.println(p.getId() + ")" + p.getName());
         }

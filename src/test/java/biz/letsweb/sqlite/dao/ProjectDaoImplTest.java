@@ -3,6 +3,7 @@ package biz.letsweb.sqlite.dao;
 import biz.letsweb.sqlite.SqliteUtils;
 import biz.letsweb.sqlite.configuration.Configuration;
 import biz.letsweb.sqlite.mvc.model.Project;
+import biz.letsweb.sqlite.mvc.model.Projects;
 import biz.letsweb.sqlite.mvc.model.Stage;
 import org.apache.commons.configuration.ConfigurationException;
 import org.fest.assertions.Assertions;
@@ -46,12 +47,16 @@ public class ProjectDaoImplTest {
   }
 
   @Test
-  public void savesProject() throws Exception {
+  public void savesAndDeletesProject() throws Exception {
     Project project = new Project();
-    project.setName("letsweb");
+    project.setName("letsweb1");
     projectDao.save(project);
-    final Project p = projectDao.findByName("letsweb");
+    final Project p = projectDao.findByName("letsweb1");
     Assert.assertNotNull(p);
+    final Projects findAll = (Projects) projectDao.findAll();
+    int size1 = findAll.size();
+    projectDao.delete(p);
+    Assertions.assertThat(projectDao.findAll()).hasSize(size1 - 1);
   }
 
   @Test

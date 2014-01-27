@@ -48,17 +48,19 @@ public final class StageDaoImpl implements StageDao {
 
   @Override
   public Stages findAll() throws Exception {
-    Connection con = SqliteUtils.getDataSource().getConnection();
-    PreparedStatement ps = con.prepareStatement(StageSqls.FIND_ALL.getSql());
-    final ResultSet rs = ps.executeQuery();
-    Stages stages = new Stages();
-    Stage stage = new Stage();
-    while (rs.next()) {
-      stage.setId(rs.getInt(1));
-      stage.setName(rs.getString(2));
-      stages.add(stage);
-    }
-    return stages;
+    final Stages ss = new Stages();
+    jdbcTemplate.query(StageSqls.FIND_ALL.getSql(), new RowMapper<Stage>() {
+
+      @Override
+      public Stage mapRow(ResultSet rs, int i) throws SQLException {
+        Stage s = new Stage();
+        s.setId(rs.getInt(1));
+        s.setName(rs.getString(2));
+        ss.add(s);
+        return s;
+      }
+    });
+    return ss;
   }
 
   @Override
