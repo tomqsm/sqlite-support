@@ -4,8 +4,6 @@ import biz.letsweb.sqlite.SqliteUtils;
 import biz.letsweb.sqlite.configuration.StageSqls;
 import biz.letsweb.sqlite.mvc.model.Stage;
 import biz.letsweb.sqlite.mvc.model.Stages;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.springframework.jdbc.core.JdbcTemplate;

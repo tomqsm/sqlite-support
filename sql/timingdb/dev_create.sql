@@ -56,32 +56,37 @@ FOREIGN KEY(activity_id) REFERENCES activities(id) ON DELETE CASCADE,
 FOREIGN KEY(sub_activity_id) REFERENCES activities(id) ON DELETE CASCADE
 );
 
--- associating stages with project
+-- associating project has stage
 INSERT INTO activities_associations VALUES (null, (SELECT id FROM activities WHERE name='tomtom'), (SELECT id FROM activities WHERE name='documentation'));
 INSERT INTO activities_associations VALUES (null, (SELECT id FROM activities WHERE name='tomtom'), (SELECT id FROM activities WHERE name='design'));
 INSERT INTO activities_associations VALUES (null, (SELECT id FROM activities WHERE name='tomtom'), (SELECT id FROM activities WHERE name='implementation'));
 INSERT INTO activities_associations VALUES (null, (SELECT id FROM activities WHERE name='letsweb'), (SELECT id FROM activities WHERE name='implementation'));
 
--- associating stories with project
+-- associating project has story
 INSERT INTO activities_associations VALUES (null, (SELECT id FROM activities WHERE name='tomtom'), 6);
 INSERT INTO activities_associations VALUES (null, (SELECT id FROM activities WHERE name='tomtom'), 7);
 INSERT INTO activities_associations VALUES (null, (SELECT id FROM activities WHERE name='tomtom'), 8);
-INSERT INTO activities_associations VALUES (null, (SELECT id FROM activities WHERE name='letsweb'), 6);
 
--- associating tasks with stories
+-- associating story has task
 INSERT INTO activities_associations VALUES (null, 6, 9);
 INSERT INTO activities_associations VALUES (null, 6, 10);
 INSERT INTO activities_associations VALUES (null, 6, 11);
 INSERT INTO activities_associations VALUES (null, 7, 9);
 
+-- associating story has stage
+INSERT INTO activities_associations VALUES (null, 6, (SELECT id FROM activities WHERE name='documentation'));
+
 -- find stages associated with tomtom
 SELECT a.name FROM activities a JOIN activities_associations aa ON aa.sub_activity_id = a.id WHERE aa.sub_activity_id IN (SELECT ac.id FROM activities ac WHERE ac.type_id = (SELECT id FROM types WHERE name='stage')) AND aa.activity_id=(SELECT id FROM activities WHERE name='tomtom');
 
--- find stories associated with tomtom
-SELECT a.name FROM activities a JOIN activities_associations aa ON aa.sub_activity_id = a.id WHERE aa.sub_activity_id IN (SELECT a.id FROM activities a WHERE a.type_id = (SELECT id FROM types WHERE name='story')) AND aa.activity_id=(SELECT id FROM activities WHERE name='tomtom');
+-- find stories associated with tomtom (story can belong to only one project)
+SELECT a.id, a."name" FROM activities a JOIN activities_associations aa ON aa.sub_activity_id = a.id WHERE aa.sub_activity_id IN (SELECT a.id FROM activities a WHERE a.type_id = (SELECT id FROM types WHERE name='story')) AND aa.activity_id=(SELECT id FROM activities WHERE name='tomtom');
 
 -- find tasks associated with story 'setting-up' (nr 6)
-SELECT a.name FROM activities a JOIN activities_associations aa ON aa.sub_activity_id = a.id WHERE aa.sub_activity_id IN (SELECT a.id FROM activities a WHERE a.type_id = (SELECT id FROM types WHERE name='task')) AND aa.activity_id=6;
+SELECT a.name FROM activities a JOIN activities_associations aa ON aa.sub_activity_id = a.id WHERE aa.sub_activity_id IN (SELECT a.id FROM activities a WHERE a.type_id IN (SELECT id FROM types WHERE name IN ('task','stage'))) AND aa.activity_id=6;
+
+-- find tasks associated with story nr 6, last 3 of them
+SELECT a.id, a.name FROM activities a JOIN activities_associations aa ON aa.sub_activity_id = a.id WHERE aa.sub_activity_id IN (SELECT a.id FROM activities a WHERE a.type_id = (SELECT id FROM types WHERE name='task')) AND aa.activity_id=6 ORDER BY a.id DESC LIMIT 3;
 
 -- deleting
 -- DELETE FROM activities WHERE id=1;

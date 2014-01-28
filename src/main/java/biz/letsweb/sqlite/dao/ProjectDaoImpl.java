@@ -8,7 +8,6 @@ import biz.letsweb.sqlite.mvc.model.Stage;
 import biz.letsweb.sqlite.mvc.model.Stages;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Iterator;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 

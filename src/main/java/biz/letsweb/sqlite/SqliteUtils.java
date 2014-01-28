@@ -5,6 +5,7 @@ import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 import javax.sql.DataSource;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
@@ -18,6 +19,12 @@ public class SqliteUtils {
   private static SQLiteConnectionPoolDataSource DATA_SOURCE = null;
   private static File DB_FILE = new File(Configuration.DB_FILE_NAME.toString());
   private static SqliteUtils timingDb = null;
+
+  public static void drop(List<Object> values) {
+    throw new UnsupportedOperationException("Not supported yet."); // To change body of generated
+                                                                   // methods, choose Tools |
+                                                                   // Templates.
+  }
 
   private SqliteUtils() {
 
