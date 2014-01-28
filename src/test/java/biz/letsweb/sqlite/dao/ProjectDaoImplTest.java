@@ -82,16 +82,12 @@ public class ProjectDaoImplTest {
   public void associateStage() throws Exception {
     Project p = new Project();
     p.setName("kumazin");
-    projectDao.save(p);
+    int pId = projectDao.save(p);
     Stage s = new Stage();
     s.setName("kumzin stage");
     StageDao stageDao = new StageDaoImpl();
-    stageDao.save(s);
+    int sId = stageDao.save(s);
     projectDao.associateToProject(p, s);
-    // TODO remove project refactor to another method
-    final Project pFromDb = projectDao.findByName(p.getName());
-    final Stage sFromDb = stageDao.findByName(s.getName());
-    stageDao.delete(sFromDb);
-    projectDao.delete(pFromDb);
+    projectDao.deleteByName("kumazin");
   }
 }

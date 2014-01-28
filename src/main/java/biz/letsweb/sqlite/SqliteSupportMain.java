@@ -22,7 +22,6 @@ public class SqliteSupportMain {
     LOG.trace("Main started");
     File f = new File(Configuration.DB_FILE_NAME.toString());
     if (!f.exists()) {
-
       SqliteUtils.create();
     }
     Scanner in = new Scanner(System.in);

@@ -37,13 +37,14 @@ public final class StageDaoImpl implements StageDao {
   }
 
   @Override
-  public void save(Stage stage) throws SQLException {
-    jdbcTemplate.update(StageSqls.SAVE.getSql(), new Object[] {stage.getName()});
+  public int save(Stage stage) throws SQLException {
+    return jdbcTemplate.update(StageSqls.SAVE.getSql(), new Object[] {stage.getName()});
   }
 
   @Override
-  public void update(Stage stage) throws Exception {
-    jdbcTemplate.update(StageSqls.UPDATE.getSql(), new Object[] {stage.getName(), stage.getId()});
+  public int update(Stage stage) throws Exception {
+    return jdbcTemplate.update(StageSqls.UPDATE.getSql(),
+        new Object[] {stage.getName(), stage.getId()});
   }
 
   @Override

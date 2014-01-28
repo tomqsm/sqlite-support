@@ -5,8 +5,10 @@ import biz.letsweb.sqlite.configuration.ProjectSqls;
 import biz.letsweb.sqlite.mvc.model.Project;
 import biz.letsweb.sqlite.mvc.model.Projects;
 import biz.letsweb.sqlite.mvc.model.Stage;
+import biz.letsweb.sqlite.mvc.model.Stages;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Iterator;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -36,14 +38,14 @@ public final class ProjectDaoImpl implements ProjectDao {
   }
 
   @Override
-  public void save(final Project project) throws SQLException {
-    jdbcTemplate.update(ProjectSqls.SAVE.getSql(), new Object[] {project.getName()});
+  public int save(final Project project) throws SQLException {
+    return jdbcTemplate.update(ProjectSqls.SAVE.getSql(), new Object[] {project.getName()});
   }
 
   @Override
-  public void update(final Project project) throws Exception {
-    jdbcTemplate.update(ProjectSqls.UPDATE.getSql(),
-        new Object[] {project.getName(), project.getId()});
+  public int update(final Project project) throws Exception {
+    return jdbcTemplate.update(ProjectSqls.UPDATE.getSql(), new Object[] {project.getName(),
+        project.getId()});
   }
 
   @Override
@@ -65,7 +67,23 @@ public final class ProjectDaoImpl implements ProjectDao {
 
   @Override
   public void delete(final Project t) {
-    jdbcTemplate.update(ProjectSqls.DELETE.getSql(), new Object[] {t.getId()});
+    deleteById(t.getId());
+  }
+
+  @Override
+  public void deleteById(int id) {
+    jdbcTemplate.update(ProjectSqls.DELETE.getSql(), new Object[] {id});
+  }
+
+  @Override
+  public void deleteByName(String name) {
+    final Project p = findByName(name);
+    final StageDao sd = new StageDaoImpl();
+    final Stages ss = sd.findByProject(name);
+    for (Stage s : ss) {
+      sd.delete(s);
+    }
+    delete(p);
   }
 
   @Override
