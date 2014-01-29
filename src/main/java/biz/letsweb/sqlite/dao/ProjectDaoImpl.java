@@ -1,7 +1,10 @@
 package biz.letsweb.sqlite.dao;
 
 import biz.letsweb.sqlite.SqliteUtils;
+import biz.letsweb.sqlite.Task;
 import biz.letsweb.sqlite.configuration.ProjectSqls;
+import biz.letsweb.sqlite.mvc.model.Activities;
+import biz.letsweb.sqlite.mvc.model.Activity;
 import biz.letsweb.sqlite.mvc.model.Project;
 import biz.letsweb.sqlite.mvc.model.Projects;
 import biz.letsweb.sqlite.mvc.model.Stage;
@@ -16,6 +19,7 @@ import org.springframework.jdbc.core.RowMapper;
  * @author Tomasz
  */
 public final class ProjectDaoImpl implements ProjectDao {
+
   private JdbcTemplate jdbcTemplate;
 
   public ProjectDaoImpl() {
@@ -91,5 +95,31 @@ public final class ProjectDaoImpl implements ProjectDao {
     final StageDao stageDao = new StageDaoImpl();
     final Stage s = stageDao.findByName(stage.getName());
     jdbcTemplate.update(ProjectSqls.ASSOCIATE_STAGE.getSql(), new Object[] {p.getId(), s.getId()});
+  }
+
+  @Override
+  public Activities<Activity> findTreeByTaskId(int id) {
+    final Activities<Activity> aa = new Activities<>();
+    int count = 2;
+    // TODO fix me
+    while(count > 0){
+        aa.add(subQueryForTree(id));
+        count --;
+    }
+    return aa;
+  }
+
+  private Activity subQueryForTree(int id) {
+    return jdbcTemplate.queryForObject(ProjectSqls.FIND_TREE_BY_TASK_ID.getSql(),
+        new Object[] {id}, new RowMapper<Activity>() {
+
+          @Override
+          public Activity mapRow(ResultSet rs, int i) throws SQLException {
+            Activity a = new Activity();
+            a.setId(rs.getInt(1));
+            a.setName(rs.getString(2));
+            return a;
+          }
+        });
   }
 }

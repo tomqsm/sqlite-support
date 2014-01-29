@@ -2,7 +2,7 @@ package biz.letsweb.sqlite.configuration;
 
 import org.apache.commons.configuration.XMLConfiguration;
 
-public enum StageSqls implements Sql {
+public enum StageSqls implements SqlStringProvidable {
   FIND_ALL {
 
     @Override
@@ -45,11 +45,7 @@ public enum StageSqls implements Sql {
       return XML_CONFIG.getString("sql/stage/delete");
     }
   };
-  static {
-    ConfigProvider configProvider = new ConfigProvider();
-    configProvider.initialiseXMLConfiguration("config/configuration.xml");
-    XML_CONFIG = configProvider.getXMLConfiguration();
-  }
-  private static XMLConfiguration XML_CONFIG;
+
+  private static XMLConfiguration XML_CONFIG = Configuration.XML_CONFIG;
 
 }

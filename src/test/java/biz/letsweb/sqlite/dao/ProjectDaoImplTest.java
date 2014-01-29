@@ -2,11 +2,14 @@ package biz.letsweb.sqlite.dao;
 
 import biz.letsweb.sqlite.SqliteUtils;
 import biz.letsweb.sqlite.configuration.Configuration;
+import biz.letsweb.sqlite.mvc.model.Activities;
+import biz.letsweb.sqlite.mvc.model.Activity;
 import biz.letsweb.sqlite.mvc.model.Project;
 import biz.letsweb.sqlite.mvc.model.Projects;
 import biz.letsweb.sqlite.mvc.model.Stage;
 import org.apache.commons.configuration.ConfigurationException;
 import org.fest.assertions.Assertions;
+import static org.fest.assertions.Assertions.assertThat;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -89,5 +92,13 @@ public class ProjectDaoImplTest {
     int sId = stageDao.save(s);
     projectDao.associateToProject(p, s);
     projectDao.deleteByName("kumazin");
+  }
+
+  @Test
+  public void findTreeByTaskTest() {
+    final Activities<Activity> foundTree = projectDao.findTreeByTaskId(11);
+    assertThat(foundTree).isNotNull();
+    assertThat(foundTree).isNotEmpty();
+    assertThat(foundTree).hasSize(3);
   }
 }

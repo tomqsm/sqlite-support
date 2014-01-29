@@ -87,6 +87,3 @@ SELECT a.name FROM activities a JOIN activities_associations aa ON aa.sub_activi
 
 -- find tasks associated with story nr 6, last 3 of them
 SELECT a.id, a.name FROM activities a JOIN activities_associations aa ON aa.sub_activity_id = a.id WHERE aa.sub_activity_id IN (SELECT a.id FROM activities a WHERE a.type_id = (SELECT id FROM types WHERE name='task')) AND aa.activity_id=6 ORDER BY a.id DESC LIMIT 3;
-
--- deleting
--- DELETE FROM activities WHERE id=1;

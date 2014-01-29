@@ -6,7 +6,7 @@ import org.apache.commons.configuration.XMLConfiguration;
  * 
  * @author toks
  */
-public enum StorySqls implements Sql {
+public enum StorySqls implements SqlStringProvidable {
   FIND_TASKS {
 
     @Override
@@ -21,10 +21,6 @@ public enum StorySqls implements Sql {
       return XML_CONFIG.getString("sql/story/findByName");
     }
   };
-  static {
-    ConfigProvider configProvider = new ConfigProvider();
-    configProvider.initialiseXMLConfiguration("config/configuration.xml");
-    XML_CONFIG = configProvider.getXMLConfiguration();
-  }
-  private static XMLConfiguration XML_CONFIG;
+
+  private static XMLConfiguration XML_CONFIG = Configuration.XML_CONFIG;
 }

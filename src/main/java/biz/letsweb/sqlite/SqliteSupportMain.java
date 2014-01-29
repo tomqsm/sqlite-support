@@ -45,8 +45,8 @@ public class SqliteSupportMain {
       }
       if (command.startsWith("delete project")) {
         final String[] splited = StringUtils.split(command);
-        Project newProject = new Project();
-        newProject.setName(splited[splited.length - 1]);
+        Project newProject = projectDao.findByName(splited[splited.length - 1]);
+        projectDao.deleteById(newProject.getId());
       }
       if (command.equals("stages")) {
         System.out.println("stages: 4");

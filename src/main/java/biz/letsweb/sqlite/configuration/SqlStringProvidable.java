@@ -1,5 +1,5 @@
 package biz.letsweb.sqlite.configuration;
 
-public interface Sql {
+public interface SqlStringProvidable {
   String getSql();
 }

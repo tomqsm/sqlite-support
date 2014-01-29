@@ -25,7 +25,6 @@ public enum Configuration {
     @Override
     public void setValue(final String value) throws ConfigurationException {
       XML_CONFIG.setProperty("properties/color", value);
-      XML_CONFIG.save();
     }
   },
   TIME {
@@ -79,7 +78,7 @@ public enum Configuration {
     configProvider.initialiseXMLConfiguration("config/configuration.xml");
     XML_CONFIG = configProvider.getXMLConfiguration();
   }
-  private static XMLConfiguration XML_CONFIG;
+  public static XMLConfiguration XML_CONFIG;
   private static final int FIRST = 0;
 
   public void setValue(final String value) throws ConfigurationException {

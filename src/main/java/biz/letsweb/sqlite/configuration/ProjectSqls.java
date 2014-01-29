@@ -2,7 +2,7 @@ package biz.letsweb.sqlite.configuration;
 
 import org.apache.commons.configuration.XMLConfiguration;
 
-public enum ProjectSqls implements Sql {
+public enum ProjectSqls implements SqlStringProvidable {
   FIND_ALL {
 
     @Override
@@ -44,12 +44,14 @@ public enum ProjectSqls implements Sql {
     public String getSql() {
       return XML_CONFIG.getString("sql/project/associateStage");
     }
+  },
+  FIND_TREE_BY_TASK_ID {
+
+    @Override
+    public String getSql() {
+      return XML_CONFIG.getString("sql/project/findTreeByTaskId");
+    }
   };
-  static {
-    ConfigProvider configProvider = new ConfigProvider();
-    configProvider.initialiseXMLConfiguration("config/configuration.xml");
-    XML_CONFIG = configProvider.getXMLConfiguration();
-  }
-  private static XMLConfiguration XML_CONFIG;
+  private static XMLConfiguration XML_CONFIG = Configuration.XML_CONFIG;
 
 }

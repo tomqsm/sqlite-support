@@ -24,6 +24,7 @@
             <update>UPDATE activities SET name=? WHERE id=?;</update>
             <delete>DELETE FROM activities WHERE id=?</delete>
             <associateStage>INSERT INTO activities_associations VALUES (null, ?, ?);</associateStage>
+            <findTreeByTaskId>SELECT a.id, a.name FROM activities a JOIN activities_associations aas ON a.id=aas.activity_id WHERE aas.sub_activity_id=?;</findTreeByTaskId>
         </project>
         <stage>
             <findByName>SELECT a.id, a.name FROM activities a JOIN types t ON a.type_id=t.id WHERE t.id=(SELECT id FROM types WHERE name='stage') AND a.name=?;</findByName>
