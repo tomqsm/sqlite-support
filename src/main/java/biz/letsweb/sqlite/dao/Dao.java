@@ -8,6 +8,8 @@ public interface Dao<T> {
 
   T findByName(String entityName);
 
+  T findById(final int id);
+
   int save(T object) throws Exception;
 
   int update(T object) throws Exception;

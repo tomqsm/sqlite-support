@@ -84,4 +84,11 @@ public final class StageDaoImpl implements StageDao {
   public void delete(Stage stage) {
     jdbcTemplate.update(StageSqls.DELETE.getSql(), new Object[] {stage.getId()});
   }
+
+  @Override
+  public Stage findById(int id) {
+    throw new UnsupportedOperationException("Not supported yet."); // To change body of generated
+                                                                   // methods, choose Tools |
+                                                                   // Templates.
+  }
 }

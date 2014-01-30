@@ -17,6 +17,9 @@
             <createTablesSql>sql/timingdb/dev_create.sql</createTablesSql>
         </fromFile>
         <dropTableIfExists>DROP TABLE IF EXISTS %s</dropTableIfExists>
+        <activity>
+            <findById>SELECT a.id, a.name FROM activities a WHERE a.id=?;</findById>
+        </activity>
         <project>
             <findByName>SELECT a.id, a.name FROM ${sql/tables/table[@name='a']} a JOIN types t ON a.type_id=t.id WHERE t.id=(SELECT id FROM types WHERE name='project') AND a.name=?;</findByName>
             <findAll>select id, name from activities WHERE type_id = (SELECT id FROM types WHERE name='project');</findAll>

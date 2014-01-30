@@ -1,7 +1,6 @@
 package biz.letsweb.sqlite.dao;
 
 import biz.letsweb.sqlite.SqliteUtils;
-import biz.letsweb.sqlite.configuration.StageSqls;
 import biz.letsweb.sqlite.configuration.StorySqls;
 import biz.letsweb.sqlite.mvc.model.Story;
 import java.sql.ResultSet;
@@ -49,6 +48,13 @@ public class StoryDaoImpl implements StoryDao {
   @Override
   public void delete(Story t) {
     throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public Story findById(int id) {
+    throw new UnsupportedOperationException("Not supported yet."); // To change body of generated
+                                                                   // methods, choose Tools |
+                                                                   // Templates.
   }
 
 }

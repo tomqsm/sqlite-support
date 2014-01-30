@@ -1,7 +1,6 @@
 package biz.letsweb.sqlite.dao;
 
 import biz.letsweb.sqlite.SqliteUtils;
-import biz.letsweb.sqlite.Task;
 import biz.letsweb.sqlite.configuration.ProjectSqls;
 import biz.letsweb.sqlite.mvc.model.Activities;
 import biz.letsweb.sqlite.mvc.model.Activity;
@@ -11,6 +10,9 @@ import biz.letsweb.sqlite.mvc.model.Stage;
 import biz.letsweb.sqlite.mvc.model.Stages;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -21,6 +23,7 @@ import org.springframework.jdbc.core.RowMapper;
 public final class ProjectDaoImpl implements ProjectDao {
 
   private JdbcTemplate jdbcTemplate;
+  private static final Logger LOG = LoggerFactory.getLogger(ProjectDaoImpl.class);
 
   public ProjectDaoImpl() {
     jdbcTemplate = new JdbcTemplate(SqliteUtils.getDataSource());
@@ -90,7 +93,7 @@ public final class ProjectDaoImpl implements ProjectDao {
   }
 
   @Override
-  public void associateToProject(final Project project, final Stage stage) {
+  public final void associateToProject(final Project project, final Stage stage) {
     final Project p = findByName(project.getName());
     final StageDao stageDao = new StageDaoImpl();
     final Stage s = stageDao.findByName(stage.getName());
@@ -98,13 +101,19 @@ public final class ProjectDaoImpl implements ProjectDao {
   }
 
   @Override
-  public Activities<Activity> findTreeByTaskId(int id) {
+  public final Activities<Activity> findTreeByTaskId(int id) {
     final Activities<Activity> aa = new Activities<>();
-    int count = 2;
-    // TODO fix me
-    while(count > 0){
-        aa.add(subQueryForTree(id));
-        count --;
+    Activity activity = new ActivityDaoImpl().findById(id);
+    aa.add(activity);
+    Activity subActivity = null;
+    try {
+    while(true){
+        subActivity = subQueryForTree(activity.getId());
+        aa.add(subActivity);
+        activity = subActivity;
+    }
+    } catch(EmptyResultDataAccessException exception){
+        LOG.trace("Emptied result set expected exception ignored.");
     }
     return aa;
   }
@@ -121,5 +130,10 @@ public final class ProjectDaoImpl implements ProjectDao {
             return a;
           }
         });
+  }
+
+  @Override
+  public Project findById(int id) {
+    throw new UnsupportedOperationException("Not supported yet.");
   }
 }
