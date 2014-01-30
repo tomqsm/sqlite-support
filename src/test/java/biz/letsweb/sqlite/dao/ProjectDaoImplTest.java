@@ -96,7 +96,7 @@ public class ProjectDaoImplTest {
 
   @Test
   public void findTreeByTaskIdTest() {
-    final Activities<Activity> foundTree = projectDao.findTreeByTaskId(11);
+    final Activities<Activity> foundTree = projectDao.findTreeByTaskId(12);
     assertThat(foundTree).isNotNull();
     assertThat(foundTree).isNotEmpty();
     assertThat(foundTree).hasSize(3);

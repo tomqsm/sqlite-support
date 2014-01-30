@@ -72,7 +72,7 @@ public class StageDaoImplTest {
     Stage stage = new Stage();
     stage.setName("test stage");
     stageDao.save(stage);
-    assertEquals(4, stageDao.findAll().size());
+    assertEquals(5, stageDao.findAll().size());
   }
 
   @Test

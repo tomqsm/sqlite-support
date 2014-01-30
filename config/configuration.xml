@@ -11,7 +11,7 @@
             <table name="at">activities_associations</table>
             <table name="a">activities</table>
             <table name="t">types</table>
-            <table name="c">running</table>
+            <table name="c">history</table>
         </tables>
         <fromFile>
             <createTablesSql>sql/timingdb/dev_create.sql</createTablesSql>
