@@ -1,7 +1,8 @@
-DROP TABLE IF EXISTS activities_associations;
-DROP TABLE IF EXISTS activities;
-DROP TABLE IF EXISTS types;
-DROP TABLE IF EXISTS current;
+-- DROP TABLE IF EXISTS activities_associations;
+-- DROP TABLE IF EXISTS activities;
+-- DROP TABLE IF EXISTS types;
+-- DROP TABLE IF EXISTS running;
+DROP TRIGGER IF EXISTS triggername;
 
 CREATE TABLE types (
 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -15,10 +16,15 @@ name VARCHAR(25),
 FOREIGN KEY(type_id) REFERENCES types(id) ON DELETE NO ACTION
 );
 
-CREATE TABLE current (
-project_id INTEGER,
-FOREIGN KEY(project_id) REFERENCES activities(id)
+CREATE TABLE running (
+project_id INTEGER
 );
+
+CREATE TRIGGER triggername AFTER INSERT 
+ON running 
+BEGIN 
+INSERT INTO activities VALUES (null, 1, 'letsweb'); 
+END;
 
 INSERT INTO types VALUES (null, 'project');
 INSERT INTO types VALUES (null, 'stage');
@@ -27,8 +33,9 @@ INSERT INTO types VALUES (null, 'task');
 
 -- adding projects
 INSERT INTO activities VALUES (null, 1, 'tomtom');
-INSERT INTO activities VALUES (null, 1, 'letsweb');
+-- INSERT INTO activities VALUES (null, 1, 'letsweb');
 
+INSERT INTO running VALUES(1);
 -- adding stages
 INSERT INTO activities VALUES (null, 2, 'documentation');
 INSERT INTO activities VALUES (null, 2, 'implementation');

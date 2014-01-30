@@ -22,7 +22,7 @@ import org.springframework.jdbc.core.RowMapper;
  */
 public final class ProjectDaoImpl implements ProjectDao {
 
-  private JdbcTemplate jdbcTemplate;
+  private final JdbcTemplate jdbcTemplate;
   private static final Logger LOG = LoggerFactory.getLogger(ProjectDaoImpl.class);
 
   public ProjectDaoImpl() {
@@ -112,7 +112,7 @@ public final class ProjectDaoImpl implements ProjectDao {
         aa.add(subActivity);
         activity = subActivity;
     }
-    } catch(EmptyResultDataAccessException exception){
+    } catch(EmptyResultDataAccessException e){
         LOG.trace("Emptied result set expected exception ignored.");
     }
     return aa;

@@ -4,6 +4,7 @@ import biz.letsweb.sqlite.configuration.Configuration;
 import biz.letsweb.sqlite.dao.ProjectDao;
 import biz.letsweb.sqlite.dao.ProjectDaoImpl;
 import biz.letsweb.sqlite.mvc.model.Project;
+import biz.letsweb.sqlite.mvc.view.Presenter;
 import java.io.File;
 import java.util.List;
 import java.util.Scanner;
@@ -29,6 +30,7 @@ public class SqliteSupportMain {
     System.out.println("type your command ...");
     while (run) {
       ProjectDao projectDao = new ProjectDaoImpl();
+      Presenter presenter = new Presenter();
       String command = in.nextLine();
       if (command.equalsIgnoreCase("projects")) {
         final List<Project> projects = new ProjectDaoImpl().findAll().getAsList();
@@ -47,6 +49,9 @@ public class SqliteSupportMain {
         final String[] splited = StringUtils.split(command);
         Project newProject = projectDao.findByName(splited[splited.length - 1]);
         projectDao.deleteById(newProject.getId());
+      }
+      if (command.equals("present")) {
+        System.out.println(presenter.presentActivitiesTree(projectDao.findTreeByTaskId(11)));
       }
       if (command.equals("stages")) {
         System.out.println("stages: 4");
