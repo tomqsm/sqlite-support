@@ -36,7 +36,7 @@ INSERT INTO activities VALUES (null, 1, 'letsweb');
 INSERT INTO activities VALUES (null, 2, 'documentation');
 INSERT INTO activities VALUES (null, 2, 'implementation');
 INSERT INTO activities VALUES (null, 2, 'design');
-INSERT INTO activities VALUES (null, 2, 'pause');
+INSERT INTO activities VALUES (null, 2, 'pause'); --6
 SELECT a.id FROM activities a WHERE a.type_id = (SELECT id FROM types WHERE name='stage');
 
 -- adding stories
@@ -77,6 +77,7 @@ INSERT INTO activities_associations VALUES (null, 7, 9);
 INSERT INTO activities_associations VALUES (null, 7, 10);
 INSERT INTO activities_associations VALUES (null, 7, 12);
 INSERT INTO activities_associations VALUES (null, 8, 9);
+INSERT INTO activities_associations VALUES (null, 12, 6);
 
 -- associating story has stage
 INSERT INTO activities_associations VALUES (null, 7, (SELECT id FROM activities WHERE name='documentation'));

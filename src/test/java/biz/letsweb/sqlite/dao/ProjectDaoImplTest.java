@@ -104,4 +104,16 @@ public class ProjectDaoImplTest {
     assertThat(foundTree.get(1).getName()).isEqualTo("story setting-up");
     assertThat(foundTree.get(2).getName()).isEqualTo("tomtom");
   }
+
+  @Test
+  public void findTreeByTaskIdNextTest() {
+    final Activities<Activity> foundTree = projectDao.findTreeByTaskId(6);
+    assertThat(foundTree).isNotNull();
+    assertThat(foundTree).isNotEmpty();
+    assertThat(foundTree).hasSize(4);
+    assertThat(foundTree.get(0).getName()).isEqualTo("pause");
+    assertThat(foundTree.get(1).getName()).isEqualTo("task made a commit");
+    assertThat(foundTree.get(2).getName()).isEqualTo("story setting-up");
+    assertThat(foundTree.get(3).getName()).isEqualTo("tomtom");
+  }
 }
