@@ -9,16 +9,20 @@
     <sql>
         <tables>
             <table name="at">activities_associations</table>
+            <table name="h">history</table>
             <table name="a">activities</table>
             <table name="t">types</table>
-            <table name="c">history</table>
         </tables>
         <fromFile>
             <createTablesSql>sql/timingdb/dev_create.sql</createTablesSql>
         </fromFile>
         <dropTableIfExists>DROP TABLE IF EXISTS %s</dropTableIfExists>
         <activity>
-            <findById>SELECT a.id, a.name FROM activities a WHERE a.id=?;</findById>
+            <findById>SELECT a.id, a.type_id, a.name FROM activities a WHERE a.id=?;</findById>
+            <findSuperAssociationBySubId>SELECT * FROM activities_associations aa WHERE aa.sub_activity_id=? AND aa.activity_id=?;</findSuperAssociationBySubId>
+            <findRecentActivity>SELECT * FROM activities WHERE id = (SELECT aa.activity_id FROM history h JOIN activities_associations aa ON h.activities_associations_id=aa.id WHERE h.time_stamp = (SELECT MAX(time_stamp) FROM history));</findRecentActivity>
+            <findRecentSubActivity>SELECT * FROM activities WHERE id = (SELECT aa.sub_activity_id FROM history h JOIN activities_associations aa ON h.activities_associations_id=aa.id WHERE h.time_stamp = (SELECT MAX(time_stamp) FROM history));</findRecentSubActivity>
+            <findRecentByProjectId>SELECT aa.activity_id, aa.sub_activity_id FROM history h JOIN activities_associations aa ON h.activities_associations_id=aa.id WHERE h.time_stamp = (SELECT MAX(time_stamp) FROM history WHERE project_id=?);</findRecentByProjectId>
         </activity>
         <project>
             <findByName>SELECT a.id, a.name FROM ${sql/tables/table[@name='a']} a JOIN types t ON a.type_id=t.id WHERE t.id=(SELECT id FROM types WHERE name='project') AND a.name=?;</findByName>

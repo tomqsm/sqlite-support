@@ -1,5 +1,7 @@
 package biz.letsweb.sqlite.mvc.model;
 
+import biz.letsweb.sqlite.dao.Types;
+
 /**
  * 
  * @author Tomasz
@@ -9,6 +11,7 @@ public class Activity {
   int id;
   String name;
   String description;
+  Types type;
   ChangeLog changeLog;
 
   public int getId() {
@@ -25,6 +28,14 @@ public class Activity {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public Types getType() {
+    return type;
+  }
+
+  public void setType(int typeId) {
+    this.type = Types.LOOKUP.get(typeId);
   }
 
 }

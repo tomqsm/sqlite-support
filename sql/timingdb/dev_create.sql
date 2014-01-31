@@ -1,7 +1,8 @@
--- DROP TABLE IF EXISTS activities_associations;
--- DROP TABLE IF EXISTS activities;
--- DROP TABLE IF EXISTS types;
--- DROP TABLE IF EXISTS running;
+DROP TABLE IF EXISTS activities_associations;
+DROP TABLE IF EXISTS activities;
+DROP TABLE IF EXISTS types;
+DROP TABLE IF EXISTS running;
+DROP TABLE IF EXISTS history;
 DROP TRIGGER IF EXISTS triggername;
 
 CREATE TABLE types (
@@ -14,13 +15,6 @@ id INTEGER PRIMARY KEY AUTOINCREMENT,
 type_id INTEGER,
 name VARCHAR(25),
 FOREIGN KEY(type_id) REFERENCES types(id) ON DELETE NO ACTION
-);
-
-CREATE TABLE history (
-id INTEGER PRIMARY KEY AUTOINCREMENT,
-activity_id INTEGER,
-time_stamp DATETIME,
-FOREIGN KEY(activity_id) REFERENCES activities(id) ON DELETE CASCADE
 );
 
 INSERT INTO types VALUES (null, 'project');
@@ -51,7 +45,6 @@ INSERT INTO activities VALUES (null, 4, 'task replaced dependency'); --11
 INSERT INTO activities VALUES (null, 4, 'task made a commit'); --12
 SELECT a.id AS 'activity_id' FROM activities a WHERE a.type_id = (SELECT id FROM types WHERE name='task');
 
-INSERT INTO history VALUES(null, 12, datetime('now'));
 
 CREATE TABLE activities_associations (
 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -59,6 +52,17 @@ activity_id INTEGER,
 sub_activity_id INTEGER,
 FOREIGN KEY(activity_id) REFERENCES activities(id) ON DELETE CASCADE,
 FOREIGN KEY(sub_activity_id) REFERENCES activities(id) ON DELETE CASCADE
+);
+-- findRecentByProjectId
+-- findRecentProject
+-- findPrevious
+CREATE TABLE history (
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+project_id INTEGER,
+activities_associations_id INTEGER,
+time_stamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+FOREIGN KEY(project_id) REFERENCES activities(id) ON DELETE CASCADE
+FOREIGN KEY(activities_associations_id) REFERENCES activities_associations(id) ON DELETE CASCADE
 );
 
 -- associating project has stage
@@ -78,9 +82,14 @@ INSERT INTO activities_associations VALUES (null, 7, 10);
 INSERT INTO activities_associations VALUES (null, 7, 12);
 INSERT INTO activities_associations VALUES (null, 8, 9);
 INSERT INTO activities_associations VALUES (null, 12, 6);
+INSERT INTO activities_associations VALUES (null, 7, 6);
 
 -- associating story has stage
 INSERT INTO activities_associations VALUES (null, 7, (SELECT id FROM activities WHERE name='documentation'));
+
+
+-- make history id|project_id|activities_associations_is|time_stamp
+INSERT INTO history VALUES(null, 1, 12, datetime('now', 'localtime'));
 
 -- find stages associated with tomtom
 SELECT a.name FROM activities a JOIN activities_associations aa ON aa.sub_activity_id = a.id WHERE aa.sub_activity_id IN (SELECT ac.id FROM activities ac WHERE ac.type_id = (SELECT id FROM types WHERE name='stage')) AND aa.activity_id=(SELECT id FROM activities WHERE name='tomtom');
@@ -93,6 +102,17 @@ SELECT a.name FROM activities a JOIN activities_associations aa ON aa.sub_activi
 
 -- find tasks associated with story nr 7, last 3 of them
 SELECT a.id, a.name FROM activities a JOIN activities_associations aa ON aa.sub_activity_id = a.id WHERE aa.sub_activity_id IN (SELECT a.id FROM activities a WHERE a.type_id = (SELECT id FROM types WHERE name='task')) AND aa.activity_id=7 ORDER BY a.id DESC LIMIT 3;
+SELECT * FROM activities_associations aa WHERE aa.sub_activity_id=6 AND aa.activity_id=12;
 
+-- findRecentByProjectId
+SELECT aa.activity_id, aa.sub_activity_id FROM history h JOIN activities_associations aa ON h.activities_associations_id=aa.id WHERE h.time_stamp = (SELECT MAX(time_stamp) FROM history WHERE project_id=1);
+
+-- findRecentSubActivity
+SELECT * FROM activities WHERE id = (SELECT aa.sub_activity_id FROM history h JOIN activities_associations aa ON h.activities_associations_id=aa.id WHERE h.time_stamp = (SELECT MAX(time_stamp) FROM history));
+-- findRecentActivity
+SELECT * FROM activities WHERE id = (SELECT aa.activity_id FROM history h JOIN activities_associations aa ON h.activities_associations_id=aa.id WHERE h.time_stamp = (SELECT MAX(time_stamp) FROM history));
+
+-- findRecentActivity
+SELECT aa.activity_id, aa.sub_activity_id FROM history h JOIN activities_associations aa ON h.activities_associations_id=aa.id WHERE h.time_stamp = (SELECT MAX(time_stamp) FROM history);
 -- addition of new association should trigger a record in history
 -- perhaps history should be linked to association rather than activity ? //TODO

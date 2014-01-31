@@ -105,7 +105,7 @@ public class ProjectDaoImplTest {
     assertThat(foundTree.get(2).getName()).isEqualTo("tomtom");
   }
 
-  @Test
+  // @Test
   public void findTreeByTaskIdNextTest() {
     final Activities<Activity> foundTree = projectDao.findTreeByTaskId(6);
     assertThat(foundTree).isNotNull();

@@ -32,7 +32,6 @@ public class ActivityDaoImplTest {
   @AfterClass
   public static void tearDownClass() {}
 
-
   @Before
   public void setUp() {}
 
@@ -43,6 +42,20 @@ public class ActivityDaoImplTest {
   public void testFindById() {
     final Activity activity = activityDao.findById(11);
     assertThat(activity).isNotNull();
+  }
+
+  @Test
+  public void findRecentSubActivity() {
+    final Activity activity = activityDao.findRecentSubActivity();
+    assertThat(activity).isNotNull();
+    // TODO test further
+  }
+
+  @Test
+  public void findRecentActivity() {
+    final Activity activity = activityDao.findRecentActivity();
+    assertThat(activity).isNotNull();
+    // TODO test further
   }
 
 }
