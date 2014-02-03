@@ -4,7 +4,7 @@ import biz.letsweb.sqlite.SqliteUtils;
 import biz.letsweb.sqlite.configuration.Configuration;
 import biz.letsweb.sqlite.mvc.model.Activity;
 import org.apache.commons.configuration.ConfigurationException;
-import static org.fest.assertions.Assertions.*;
+import static org.fest.assertions.Assertions.assertThat;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -48,6 +48,7 @@ public class ActivityDaoImplTest {
   public void findRecentSubActivity() {
     final Activity activity = activityDao.findRecentSubActivity();
     assertThat(activity).isNotNull();
+    assertThat(activity.getId()).isEqualTo(6);
     // TODO test further
   }
 
@@ -55,6 +56,8 @@ public class ActivityDaoImplTest {
   public void findRecentActivity() {
     final Activity activity = activityDao.findRecentActivity();
     assertThat(activity).isNotNull();
+    assertThat(activity.getId()).isEqualTo(12);
+
     // TODO test further
   }
 
