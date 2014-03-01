@@ -2,11 +2,10 @@ package biz.letsweb.sqlite;
 
 import biz.letsweb.sqlite.configuration.Configuration;
 import biz.letsweb.sqlite.dao.ProjectDao;
-import biz.letsweb.sqlite.dao.ProjectDaoImpl;
+import biz.letsweb.sqlite.dao.ProjectSqliteDaoImpl;
 import biz.letsweb.sqlite.mvc.model.Project;
 import biz.letsweb.sqlite.mvc.view.Presenter;
 import java.io.File;
-import java.util.List;
 import java.util.Scanner;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.PropertyConfigurator;
@@ -29,11 +28,11 @@ public class SqliteSupportMain {
     boolean run = true;
     System.out.println("type your command ...");
     while (run) {
-      ProjectDao projectDao = new ProjectDaoImpl();
+      ProjectDao projectDao = new ProjectSqliteDaoImpl();
       Presenter presenter = new Presenter();
       String command = in.nextLine();
       if (command.equalsIgnoreCase("projects")) {
-        final List<Project> projects = new ProjectDaoImpl().findAll().getAsList();
+        final Iterable<Project> projects = projectDao.findAll();
         for (Project p : projects) {
           System.out.println(p.getId() + ")" + p.getName());
         }

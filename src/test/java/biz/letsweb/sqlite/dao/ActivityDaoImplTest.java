@@ -20,7 +20,7 @@ public class ActivityDaoImplTest {
   private ActivityDao activityDao;
 
   public ActivityDaoImplTest() {
-    activityDao = new ActivityDaoImpl();
+    activityDao = new ActivitySqliteDaoImpl();
   }
 
   @BeforeClass

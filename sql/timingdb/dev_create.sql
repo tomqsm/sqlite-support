@@ -1,9 +1,9 @@
-DROP TABLE IF EXISTS activities_associations;
-DROP TABLE IF EXISTS activities;
-DROP TABLE IF EXISTS types;
-DROP TABLE IF EXISTS running;
-DROP TABLE IF EXISTS history;
-DROP TRIGGER IF EXISTS triggername;
+-- DROP TABLE IF EXISTS activities_associations;
+-- DROP TABLE IF EXISTS activities;
+-- DROP TABLE IF EXISTS types;
+-- DROP TABLE IF EXISTS running;
+-- DROP TABLE IF EXISTS history;
+-- DROP TRIGGER IF EXISTS triggername;
 
 CREATE TABLE types (
 id INTEGER PRIMARY KEY AUTOINCREMENT,

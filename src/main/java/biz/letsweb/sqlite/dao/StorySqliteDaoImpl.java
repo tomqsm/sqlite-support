@@ -9,10 +9,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
 
-public class StoryDaoImpl implements StoryDao {
+public class StorySqliteDaoImpl implements StoryDao {
   private JdbcTemplate jdbcTemplate;
 
-  public StoryDaoImpl() {
+  public StorySqliteDaoImpl() {
     jdbcTemplate = new JdbcTemplate(SqliteUtils.getDataSource());
   }
 

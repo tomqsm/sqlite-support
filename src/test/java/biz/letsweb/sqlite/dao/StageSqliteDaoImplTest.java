@@ -19,7 +19,7 @@ import org.junit.Test;
  * 
  * @author kusmierc
  */
-public class StageDaoImplTest {
+public class StageSqliteDaoImplTest {
 
   private StageDao stageDao;
 
@@ -34,7 +34,7 @@ public class StageDaoImplTest {
 
   @Before
   public void setUp() {
-    stageDao = new StageDaoImpl();
+    stageDao = new StageSqliteDaoImpl();
   }
 
   @After

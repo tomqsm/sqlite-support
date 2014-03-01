@@ -36,7 +36,7 @@ public class StoryDaoImplTest {
 
   @Test
   public void testFindByName() {
-    StoryDaoImpl storyDao = new StoryDaoImpl();
+    StorySqliteDaoImpl storyDao = new StorySqliteDaoImpl();
     Story result = storyDao.findByName("story setting-up");
     assertThat(result.getName()).isEqualTo("story setting-up");
   }

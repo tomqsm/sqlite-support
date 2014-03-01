@@ -9,11 +9,11 @@ import java.sql.SQLException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
-public class ActivityDaoImpl implements ActivityDao {
+public class ActivitySqliteDaoImpl implements ActivityDao {
 
   private JdbcTemplate jdbcTemplate;
 
-  public ActivityDaoImpl() {
+  public ActivitySqliteDaoImpl() {
     jdbcTemplate = new JdbcTemplate(SqliteUtils.getDataSource());
   }
 

@@ -13,10 +13,10 @@ import org.springframework.jdbc.core.RowMapper;
  * 
  * @author Tomasz
  */
-public final class StageDaoImpl implements StageDao {
+public final class StageSqliteDaoImpl implements StageDao {
   private JdbcTemplate jdbcTemplate;
 
-  public StageDaoImpl() {
+  public StageSqliteDaoImpl() {
     jdbcTemplate = new JdbcTemplate(SqliteUtils.getDataSource());
   }
 
