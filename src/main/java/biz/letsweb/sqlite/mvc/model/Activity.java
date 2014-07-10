@@ -11,7 +11,7 @@ public class Activity {
   int id;
   String name;
   String description;
-  Types type;
+  String type;
   ChangeLog changeLog;
 
   public int getId() {
@@ -30,12 +30,17 @@ public class Activity {
     this.name = name;
   }
 
-  public Types getType() {
-    return type;
-  }
+    public String getType() {
+        return type;
+    }
 
-  public void setType(int typeId) {
-    this.type = Types.LOOKUP.get(typeId);
-  }
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    @Override
+    public String toString() {
+        return "Activity{" + "id=" + id + ", name=" + name + ", description=" + description + ", type=" + type + ", changeLog=" + changeLog + '}';
+    }
 
 }

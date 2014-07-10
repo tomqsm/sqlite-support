@@ -37,6 +37,13 @@ public enum ActivitySqls implements SqlStringProvidable {
     public String getSql() {
       return XML_CONFIG.getString("sql/activity/findRecentActivity");
     }
+  },
+  FIND_RECENTS {
+
+    @Override
+    public String getSql() {
+      return XML_CONFIG.getString("sql/activity/findRecents");
+    }
   };
   private static XMLConfiguration XML_CONFIG = Configuration.XML_CONFIG;
 

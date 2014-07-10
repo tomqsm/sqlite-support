@@ -30,7 +30,7 @@ public class SqliteUtils {
 
   }
 
-  public static DataSource getDataSource() {
+  public synchronized static DataSource getDataSource() {
     if (DATA_SOURCE == null) {
       final SQLiteConfig config = new SQLiteConfig();
       config.enforceForeignKeys(true);

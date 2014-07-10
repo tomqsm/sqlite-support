@@ -17,11 +17,22 @@ change_time DATE,
 last_modified DATETIME
 );
 
-An activity has two hands and can bound with two other activities.
-The first activity is attached to the trunk (project) and the last to (leaf) i.e. the last sub task.
-This binding creates a chain of activities. 
-There can be many chains of activities originating in the same source.
-These chains are forming tree-like structure, project (trunk), story (branch), task(sub-branch), task(leaf)
+An activity has two hands and can bound with two other activities. Many-to-many.
+activity1 -- activity2 -- activity3 -- activity4
+rootTask                                leafTask
+
+activity1   --  activity2   --  activity4
+            --  activity3   --  activity5
+            --  activity6
+
+activity8   --  activity2   --  activity7   --  activity9
+
+Go from leaftask to rootTask ?
+activity9   --  activity7   --  activity2   --  activity1
+                                            --  activity8
+
+select 
+
 It is possible to traverse the chain from leaf to trunk.
 
 There are tasks which are cross-cutting concerns, cutting cross-wide this organisation.

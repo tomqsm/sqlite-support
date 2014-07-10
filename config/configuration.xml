@@ -18,11 +18,12 @@
         </fromFile>
         <dropTableIfExists>DROP TABLE IF EXISTS %s</dropTableIfExists>
         <activity>
-            <findById>SELECT a.id, a.type_id, a.name FROM activities a WHERE a.id=?;</findById>
+            <findById>SELECT a.id, a."name", t."name" AS 'type' FROM activities a JOIN types t ON a.type_id=t.id WHERE a.id=?;</findById>
             <findSuperAssociationBySubId>SELECT * FROM activities_associations aa WHERE aa.sub_activity_id=? AND aa.activity_id=?;</findSuperAssociationBySubId>
             <findRecentActivity>SELECT * FROM activities WHERE id = (SELECT aa.activity_id FROM history h JOIN activities_associations aa ON h.activities_associations_id=aa.id WHERE h.time_stamp = (SELECT MAX(time_stamp) FROM history));</findRecentActivity>
             <findRecentSubActivity>SELECT * FROM activities WHERE id = (SELECT aa.sub_activity_id FROM history h JOIN activities_associations aa ON h.activities_associations_id=aa.id WHERE h.time_stamp = (SELECT MAX(time_stamp) FROM history));</findRecentSubActivity>
             <findRecentByProjectId>SELECT aa.activity_id, aa.sub_activity_id FROM history h JOIN activities_associations aa ON h.activities_associations_id=aa.id WHERE h.time_stamp = (SELECT MAX(time_stamp) FROM history WHERE project_id=?);</findRecentByProjectId>
+            <findRecents>SELECT h.project_id AS 'project', aa.activity_id AS 'story', aa.sub_activity_id AS 'task', h.stage_id AS 'stage' FROM history h JOIN activities_associations aa ON h.activities_associations_id=aa.id WHERE h.time_stamp = (SELECT MAX(time_stamp) FROM history);</findRecents>
         </activity>
         <project>
             <findByName>SELECT a.id, a.name FROM ${sql/tables/table[@name='a']} a JOIN types t ON a.type_id=t.id WHERE t.id=(SELECT id FROM types WHERE name='project') AND a.name=?;</findByName>
@@ -31,7 +32,6 @@
             <update>UPDATE activities SET name=? WHERE id=?;</update>
             <delete>DELETE FROM activities WHERE id=?</delete>
             <associateStage>INSERT INTO activities_associations VALUES (null, ?, ?);</associateStage>
-            <findTreeByTaskId>SELECT a.id, a.name FROM activities a JOIN activities_associations aas ON a.id=aas.activity_id WHERE aas.sub_activity_id=?;</findTreeByTaskId>
         </project>
         <stage>
             <findByName>SELECT a.id, a.name FROM activities a JOIN types t ON a.type_id=t.id WHERE t.id=(SELECT id FROM types WHERE name='stage') AND a.name=?;</findByName>

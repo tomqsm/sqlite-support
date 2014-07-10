@@ -28,8 +28,8 @@ public class Activities <T> implements Iterable<T>{
         return activities.size();
     }
 
-    public boolean add(T stage) {
-        return activities.add(stage);
+    public boolean add(T activity) {
+        return activities.add(activity);
     }
 
     public boolean remove(T stage) {

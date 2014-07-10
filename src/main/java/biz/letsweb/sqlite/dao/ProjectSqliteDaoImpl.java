@@ -2,8 +2,6 @@ package biz.letsweb.sqlite.dao;
 
 import biz.letsweb.sqlite.SqliteUtils;
 import biz.letsweb.sqlite.configuration.ProjectSqls;
-import biz.letsweb.sqlite.mvc.model.Activities;
-import biz.letsweb.sqlite.mvc.model.Activity;
 import biz.letsweb.sqlite.mvc.model.Project;
 import biz.letsweb.sqlite.mvc.model.Projects;
 import biz.letsweb.sqlite.mvc.model.Stage;
@@ -13,7 +11,6 @@ import java.sql.SQLException;
 import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -114,39 +111,23 @@ public final class ProjectSqliteDaoImpl implements ProjectDao {
     jdbcTemplate.update(sql, params);
   }
 
-  @Override
-    public final Activities<Activity> findTreeByTaskId(int id) {
-        final Activities<Activity> aa = new Activities<>();
-        Activity activity = new ActivitySqliteDaoImpl().findById(id);
-        aa.add(activity);
-        Activity subActivity = null;
-        try {
-            while (true) {
-                subActivity = subQueryForTree(activity.getId());
-                aa.add(subActivity);
-                activity = subActivity;
-            }
-        } catch (EmptyResultDataAccessException e) {
-            LOG.trace("Emptied result set expected exception ignored.");
-        }
-        return aa;
-    }
 
-  private Activity subQueryForTree(int id) {
-    final RowMapper<Activity> rowMapper = new RowMapper<Activity>() {
 
-      @Override
-      public Activity mapRow(ResultSet rs, int i) throws SQLException {
-        Activity a = new Activity();
-        a.setId(rs.getInt(1));
-        a.setName(rs.getString(2));
-        return a;
-      }
-    };
-    final String sql = ProjectSqls.FIND_TREE_BY_TASK_ID.getSql();
-    final Object[] params = new Object[] {id};
-    return jdbcTemplate.queryForObject(sql, params, rowMapper);
-  }
+//  private Activity subQueryForTree(int id) {
+//    final RowMapper<Activity> rowMapper = new RowMapper<Activity>() {
+//
+//      @Override
+//      public Activity mapRow(ResultSet rs, int i) throws SQLException {
+//        Activity a = new Activity();
+//        a.setId(rs.getInt(1));
+//        a.setName(rs.getString(2));
+//        return a;
+//      }
+//    };
+//    final String sql = ProjectSqls.FIND_TREE_BY_TASK_ID.getSql();
+//    final Object[] params = new Object[] {id}; //WHERE aas.sub_activity_id=?
+//    return jdbcTemplate.queryForObject(sql, params, rowMapper); 
+//  }
 
   @Override
   public Project findById(int id) {

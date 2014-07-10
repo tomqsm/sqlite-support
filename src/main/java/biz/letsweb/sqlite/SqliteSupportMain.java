@@ -50,7 +50,6 @@ public class SqliteSupportMain {
         projectDao.deleteById(newProject.getId());
       }
       if (command.equals("present")) {
-        System.out.println(presenter.presentActivitiesTree(projectDao.findTreeByTaskId(11)));
       }
       if (command.equals("stages")) {
         System.out.println("stages: 4");

@@ -40,15 +40,16 @@ public class ActivityDaoImplTest {
 
   @Test
   public void testFindById() {
-    final Activity activity = activityDao.findById(11);
+    final Activity activity = activityDao.findById(5);
     assertThat(activity).isNotNull();
+      System.out.println(activity);
   }
 
   @Test
   public void findRecentSubActivity() {
     final Activity activity = activityDao.findRecentSubActivity();
     assertThat(activity).isNotNull();
-    assertThat(activity.getId()).isEqualTo(6);
+    assertThat(activity.getId()).isEqualTo(12);
     // TODO test further
   }
 
@@ -56,7 +57,7 @@ public class ActivityDaoImplTest {
   public void findRecentActivity() {
     final Activity activity = activityDao.findRecentActivity();
     assertThat(activity).isNotNull();
-    assertThat(activity.getId()).isEqualTo(12);
+    assertThat(activity.getId()).isEqualTo(7);
 
     // TODO test further
   }

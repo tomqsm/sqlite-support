@@ -2,6 +2,7 @@ package biz.letsweb.sqlite.dao;
 
 import biz.letsweb.sqlite.mvc.model.Activities;
 import biz.letsweb.sqlite.mvc.model.Activity;
+import java.util.List;
 
 /**
  * 
@@ -15,4 +16,5 @@ public interface ActivityDao extends Dao<Activity> {
   Activity findRecentActivity();
 
   Activities findRecentActivitiesTree();
+  List<Activity> findRecents();
 }

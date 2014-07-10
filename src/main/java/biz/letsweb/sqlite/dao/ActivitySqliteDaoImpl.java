@@ -6,6 +6,8 @@ import biz.letsweb.sqlite.mvc.model.Activities;
 import biz.letsweb.sqlite.mvc.model.Activity;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -50,8 +52,8 @@ public class ActivitySqliteDaoImpl implements ActivityDao {
           public Activity mapRow(ResultSet rs, int i) throws SQLException {
             Activity activity = new Activity();
             activity.setId(rs.getInt(1));
-            activity.setType(rs.getInt(2));
-            activity.setName(rs.getString(3));
+            activity.setName(rs.getString(2));
+            activity.setType(rs.getString(3));
             return activity;
           }
         });
@@ -65,8 +67,8 @@ public class ActivitySqliteDaoImpl implements ActivityDao {
           public Activity mapRow(ResultSet rs, int i) throws SQLException {
             Activity activity = new Activity();
             activity.setId(rs.getInt(1));
-            activity.setType(rs.getInt(2));
-            activity.setName(rs.getString(3));
+             activity.setName(rs.getString(2));
+            activity.setType(rs.getString(3));
             return activity;
           }
         });
@@ -80,8 +82,8 @@ public class ActivitySqliteDaoImpl implements ActivityDao {
           public Activity mapRow(ResultSet rs, int i) throws SQLException {
             Activity activity = new Activity();
             activity.setId(rs.getInt(1));
-            activity.setType(rs.getInt(2));
-            activity.setName(rs.getString(3));
+            activity.setName(rs.getString(2));
+            activity.setType(rs.getString(3));
             return activity;
           }
         });
@@ -95,8 +97,8 @@ public class ActivitySqliteDaoImpl implements ActivityDao {
           public Activity mapRow(ResultSet rs, int i) throws SQLException {
             Activity activity = new Activity();
             activity.setId(rs.getInt(1));
-            activity.setType(rs.getInt(2));
-            activity.setName(rs.getString(3));
+             activity.setName(rs.getString(2));
+            activity.setType(rs.getString(3));
             return activity;
           }
         });
@@ -106,6 +108,19 @@ public class ActivitySqliteDaoImpl implements ActivityDao {
   public Activities findRecentActivitiesTree() {
     throw new UnsupportedOperationException("Not supported yet.");
   }
+
+    @Override
+    public List<Activity> findRecents() {
+        jdbcTemplate.queryForObject(ActivitySqls.FIND_RECENTS.getSql(), new RowMapper<List<Integer>>(){
+
+            @Override
+            public List<Integer> mapRow(ResultSet rs, int i) throws SQLException {
+                List<Integer>list = new ArrayList<>();
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        });
+        throw new UnsupportedOperationException("Not supported yet."); 
+    }
 
 
 
