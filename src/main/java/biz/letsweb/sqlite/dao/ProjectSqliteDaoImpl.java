@@ -86,10 +86,9 @@ public final class ProjectSqliteDaoImpl implements ProjectDao {
     @Override
     public void deleteByName(String name) {
         final Project p = findByName(name);
-        final StageDao sd = new StageSqliteDaoImpl();
-        final List<Stage> ss = sd.findByProject(name);
+        final List<Stage> ss = stageDao.findByProject(name);
         for (Stage s : ss) {
-            sd.delete(s);
+            stageDao.delete(s);
         }
         delete(p);
     }
@@ -102,22 +101,7 @@ public final class ProjectSqliteDaoImpl implements ProjectDao {
         final Object[] params = new Object[]{p.getId(), s.getId()};
         jdbcTemplate.update(sql, params);
     }
-
-//  private Activity subQueryForTree(int id) {
-//    final RowMapper<Activity> rowMapper = new RowMapper<Activity>() {
-//
-//      @Override
-//      public Activity mapRow(ResultSet rs, int i) throws SQLException {
-//        Activity a = new Activity();
-//        a.setId(rs.getInt(1));
-//        a.setName(rs.getString(2));
-//        return a;
-//      }
-//    };
-//    final String sql = ProjectSqls.FIND_TREE_BY_TASK_ID.getSql();
-//    final Object[] params = new Object[] {id}; //WHERE aas.sub_activity_id=?
-//    return jdbcTemplate.queryForObject(sql, params, rowMapper); 
-//  }
+    
     @Override
     public Project findById(int id) {
         throw new UnsupportedOperationException("Not supported yet.");

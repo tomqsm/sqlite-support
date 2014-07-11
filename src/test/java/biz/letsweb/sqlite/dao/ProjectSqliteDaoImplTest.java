@@ -85,6 +85,15 @@ public class ProjectSqliteDaoImplTest {
         s.setName("kumzin stage");
         int sId = stageDao.save(s);
         projectDao.associateToProject(p, s);
-//        projectDao.deleteByName("kumazin");
+        projectDao.deleteByName("kumazin");
+    }
+    @Test
+    public void createNewProject() throws Exception{
+        Project p = new Project();
+        p.setName("project1");
+        p.setType("project");
+        projectDao.save(p);
+        Project pp = projectDao.findByName("project1");
+        Assertions.assertThat(pp.equals(p));
     }
 }
