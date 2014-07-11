@@ -1,6 +1,6 @@
 package biz.letsweb.sqlite.dao;
 
-import biz.letsweb.sqlite.SqliteUtils;
+import biz.letsweb.sqlite.DbConstructor;
 import biz.letsweb.sqlite.configuration.Configuration;
 import biz.letsweb.sqlite.mvc.model.Story;
 import org.apache.commons.configuration.ConfigurationException;
@@ -10,34 +10,35 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 /**
- * 
+ *
  * @author toks
  */
 public class StoryDaoImplTest {
 
-  public StoryDaoImplTest() {}
+    private StoryDao storyDao;
+    private ApplicationContext ctx;
 
-  @BeforeClass
-  public static void setUpClass() throws ConfigurationException {
-    SqliteUtils.drop(Configuration.TABLE_NAMES.getValues().toArray(new String[] {}));
-    SqliteUtils.create();
-  }
+    public StoryDaoImplTest() throws ConfigurationException {
+        ctx = new FileSystemXmlApplicationContext("file:src/main/resources/spring.xml");
+        ctx.getBean(DbConstructor.class).drop(Configuration.TABLE_NAMES.getValues().toArray(new String[]{}));
+        ctx.getBean(DbConstructor.class).create();
+    }
+    @Before
+    public void setUp() {
+        storyDao = ctx.getBean(StorySqliteDaoImpl.class);
+    }
 
-  @AfterClass
-  public static void tearDownClass() {}
+    @After
+    public void tearDown() {
+    }
 
-  @Before
-  public void setUp() {}
-
-  @After
-  public void tearDown() {}
-
-  @Test
-  public void testFindByName() {
-    StorySqliteDaoImpl storyDao = new StorySqliteDaoImpl();
-    Story result = storyDao.findByName("story setting-up");
-    assertThat(result.getName()).isEqualTo("story setting-up");
-  }
+    @Test
+    public void testFindByName() {
+        Story result = storyDao.findByName("story setting-up");
+        assertThat(result.getName()).isEqualTo("story setting-up");
+    }
 }

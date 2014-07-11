@@ -1,8 +1,8 @@
 package biz.letsweb.sqlite.dao;
 
-import biz.letsweb.sqlite.SqliteUtils;
+import biz.letsweb.sqlite.DataSourceProvidable;
+import biz.letsweb.sqlite.SqliteDataSourceProvider;
 import biz.letsweb.sqlite.configuration.ActivitySqls;
-import biz.letsweb.sqlite.mvc.model.Activities;
 import biz.letsweb.sqlite.mvc.model.Activity;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,7 +16,7 @@ public class ActivitySqliteDaoImpl implements ActivityDao {
   private JdbcTemplate jdbcTemplate;
 
   public ActivitySqliteDaoImpl() {
-    jdbcTemplate = new JdbcTemplate(SqliteUtils.getDataSource());
+    
   }
 
   @Override
@@ -105,7 +105,7 @@ public class ActivitySqliteDaoImpl implements ActivityDao {
   }
 
   @Override
-  public Activities findRecentActivitiesTree() {
+  public List<Activity> findRecentActivitiesTree() {
     throw new UnsupportedOperationException("Not supported yet.");
   }
 
@@ -120,6 +120,10 @@ public class ActivitySqliteDaoImpl implements ActivityDao {
             }
         });
         throw new UnsupportedOperationException("Not supported yet."); 
+    }
+
+    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
 

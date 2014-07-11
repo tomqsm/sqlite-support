@@ -25,6 +25,9 @@
             <findRecentByProjectId>SELECT aa.activity_id, aa.sub_activity_id FROM history h JOIN activities_associations aa ON h.activities_associations_id=aa.id WHERE h.time_stamp = (SELECT MAX(time_stamp) FROM history WHERE project_id=?);</findRecentByProjectId>
             <findRecents>SELECT h.project_id AS 'project', aa.activity_id AS 'story', aa.sub_activity_id AS 'task', h.stage_id AS 'stage' FROM history h JOIN activities_associations aa ON h.activities_associations_id=aa.id WHERE h.time_stamp = (SELECT MAX(time_stamp) FROM history);</findRecents>
         </activity>
+        <type>
+            <save></save>
+        </type>
         <project>
             <findByName>SELECT a.id, a.name FROM ${sql/tables/table[@name='a']} a JOIN types t ON a.type_id=t.id WHERE t.id=(SELECT id FROM types WHERE name='project') AND a.name=?;</findByName>
             <findAll>select id, name from activities WHERE type_id = (SELECT id FROM types WHERE name='project');</findAll>

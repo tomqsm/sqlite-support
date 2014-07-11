@@ -1,6 +1,6 @@
 package biz.letsweb.sqlite.configuration;
 
-import biz.letsweb.sqlite.SqliteUtils;
+import biz.letsweb.sqlite.SqliteDataSourceProvider;
 import org.apache.commons.configuration.ConfigurationException;
 import org.junit.After;
 import org.junit.AfterClass;

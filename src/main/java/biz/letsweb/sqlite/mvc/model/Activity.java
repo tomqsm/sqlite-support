@@ -1,18 +1,15 @@
 package biz.letsweb.sqlite.mvc.model;
 
-import biz.letsweb.sqlite.dao.Types;
-
 /**
  * 
  * @author Tomasz
  */
 public class Activity {
 
-  int id;
-  String name;
-  String description;
-  String type;
-  ChangeLog changeLog;
+  private int id;
+  private String name;
+  private String description;
+  private String type;
 
   public int getId() {
     return id;
@@ -38,9 +35,17 @@ public class Activity {
         this.type = type;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public String toString() {
-        return "Activity{" + "id=" + id + ", name=" + name + ", description=" + description + ", type=" + type + ", changeLog=" + changeLog + '}';
+        return "Activity{" + "id=" + id + ", name=" + name + ", description=" + description + ", type=" + type + '}';
     }
 
 }

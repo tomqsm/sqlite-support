@@ -4,15 +4,15 @@ import biz.letsweb.sqlite.mvc.model.Project;
 import biz.letsweb.sqlite.mvc.model.Stage;
 
 /**
- * 
+ *
  * @author Tomasz
  */
 public interface ProjectDao extends Dao<Project> {
 
-  void associateToProject(final Project project, final Stage stage);
+    void associateToProject(final Project project, final Stage stage);
 
-  void deleteByName(final String name);
+    void deleteByName(final String name);
 
-  void deleteById(final int id);
+    void deleteById(final int id);
 
 }

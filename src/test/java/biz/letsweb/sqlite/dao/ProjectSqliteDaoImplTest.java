@@ -1,15 +1,12 @@
 package biz.letsweb.sqlite.dao;
 
-import biz.letsweb.sqlite.SqliteUtils;
+import biz.letsweb.sqlite.DbConstructor;
+import biz.letsweb.sqlite.SqliteDataSourceProvider;
 import biz.letsweb.sqlite.configuration.Configuration;
-import biz.letsweb.sqlite.mvc.model.Activities;
-import biz.letsweb.sqlite.mvc.model.Activity;
 import biz.letsweb.sqlite.mvc.model.Project;
-import biz.letsweb.sqlite.mvc.model.Projects;
 import biz.letsweb.sqlite.mvc.model.Stage;
 import org.apache.commons.configuration.ConfigurationException;
 import org.fest.assertions.Assertions;
-import static org.fest.assertions.Assertions.assertThat;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -17,80 +14,77 @@ import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 /**
- * 
+ *
  * @author kusmierc
  */
 public class ProjectSqliteDaoImplTest {
 
-  private ProjectDao projectDao;
+    private ProjectDao projectDao;
+    private StageDao stageDao;
+    private ApplicationContext ctx;
 
-  @BeforeClass
-  public static void setUpClass() throws ConfigurationException {
-    SqliteUtils.drop(Configuration.TABLE_NAMES.getValues().toArray(new String[] {}));
-    SqliteUtils.create();
-  }
+    public ProjectSqliteDaoImplTest() throws ConfigurationException {
+        ctx = new FileSystemXmlApplicationContext("file:src/main/resources/spring.xml");
+        ctx.getBean(DbConstructor.class).drop(Configuration.TABLE_NAMES.getValues().toArray(new String[]{}));
+        ctx.getBean(DbConstructor.class).create();
+    }
 
-  @AfterClass
-  public static void tearDownClass() {}
+    @BeforeClass
+    public static void setUpClass() {
+    }
 
-  @Before
-  public void setUp() {
-    projectDao = new ProjectSqliteDaoImpl();
-  }
+    @AfterClass
+    public static void tearDownClass() {
+    }
 
-  @After
-  public void tearDown() {}
+    @Before
+    public void setUp() {
+        projectDao = ctx.getBean(ProjectSqliteDaoImpl.class);
+        stageDao = ctx.getBean(StageSqliteDaoImpl.class);
+    }
 
-  @Test
-  public void testFindByName() {
-    final Project project = projectDao.findByName("tomtom");
-    assertNotNull(project);
-  }
+    @After
+    public void tearDown() {
+    }
 
-  @Test
-  public void savesAndDeletesProject() throws Exception {
-    Project project = new Project();
-    project.setName("letsweb1");
-    projectDao.save(project);
-    final Project p = projectDao.findByName("letsweb1");
-    Assert.assertNotNull(p);
-    final Projects findAll = (Projects) projectDao.findAll();
-    int size1 = findAll.size();
-    projectDao.delete(p);
-    Assertions.assertThat(projectDao.findAll()).hasSize(size1 - 1);
-  }
+    @Test
+    public void testFindByName() {
+        final Project project = projectDao.findByName("tomtom");
+        assertNotNull(project);
+    }
 
-  @Test
-  public void testUpdate() throws Exception {
-    Project project = projectDao.findByName("tomtom");
-    assertNotNull(project);
-    Assert.assertEquals(1, project.getId());
-    project.setName("tt");
-    projectDao.update(project);
-  }
+    @Test
+    public void testUpdate() throws Exception {
+        Project project = projectDao.findByName("tomtom");
+        assertNotNull(project);
+        Assert.assertEquals(1, project.getId());
+        project.setName("tt");
+        projectDao.update(project);
+    }
 
-  @Test
-  public void findsAllProjects() throws Exception {
-    final Iterable<Project> projects = projectDao.findAll();
-    Assertions.assertThat(projects).hasSize(2);
-    Project project = new Project();
-    project.setName("new project");
-    projectDao.save(project);
-    Assertions.assertThat(projectDao.findAll()).hasSize(3);
-  }
+    @Test
+    public void findsAllProjects() throws Exception {
+        final Iterable<Project> projects = projectDao.findAll();
+        Assertions.assertThat(projects).hasSize(2);
+        Project project = new Project();
+        project.setName("new project");
+        projectDao.save(project);
+        Assertions.assertThat(projectDao.findAll()).hasSize(3);
+    }
 
-  @Test
-  public void associateStage() throws Exception {
-    Project p = new Project();
-    p.setName("kumazin");
-    int pId = projectDao.save(p);
-    Stage s = new Stage();
-    s.setName("kumzin stage");
-    StageDao stageDao = new StageSqliteDaoImpl();
-    int sId = stageDao.save(s);
-    projectDao.associateToProject(p, s);
-    projectDao.deleteByName("kumazin");
-  }
+    @Test
+    public void associateStage() throws Exception {
+        Project p = new Project();
+        p.setName("kumazin");
+        int pId = projectDao.save(p);
+        Stage s = new Stage();
+        s.setName("kumzin stage");
+        int sId = stageDao.save(s);
+        projectDao.associateToProject(p, s);
+//        projectDao.deleteByName("kumazin");
+    }
 }
