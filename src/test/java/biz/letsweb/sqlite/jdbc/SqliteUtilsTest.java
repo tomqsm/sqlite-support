@@ -11,6 +11,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import org.apache.commons.configuration.ConfigurationException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -22,25 +23,25 @@ import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 public class SqliteUtilsTest {
 
-    private final static Logger LOG = LoggerFactory.getLogger(SqliteUtilsTest.class);
-    private ApplicationContext ctx;
+  private final static Logger LOG = LoggerFactory.getLogger(SqliteUtilsTest.class);
+  private ApplicationContext ctx;
 
-    public SqliteUtilsTest() throws ConfigurationException {
-        ctx = new FileSystemXmlApplicationContext("file:src/main/resources/spring.xml");
-        ctx.getBean(DbConstructor.class).drop(Configuration.TABLE_NAMES.getValues().toArray(new String[]{}));
-        ctx.getBean(DbConstructor.class).create();
-    }
+  public SqliteUtilsTest() throws ConfigurationException {
+    ctx = new FileSystemXmlApplicationContext("file:src/main/resources/spring.xml");
+    ctx.getBean(DbConstructor.class).drop(
+        Configuration.TABLE_NAMES.getValues().toArray(new String[] {}));
+    ctx.getBean(DbConstructor.class).create();
+  }
 
-    @BeforeClass
-    public static void setUpClass() throws ConfigurationException {
-    }
+  @BeforeClass
+  public static void setUpClass() throws ConfigurationException {}
 
-    @AfterClass
-    public static void tearDownClass() {
-        // SqliteDataSourceProvider.delete();
-    }
+  @AfterClass
+  public static void tearDownClass() {
+    // SqliteDataSourceProvider.delete();
+  }
 
-    @Test
+  @Test
     public void testDate() throws SQLException, ParseException {
 
         String sql = "DROP TABLE IF EXISTS datetest;"
@@ -55,7 +56,7 @@ public class SqliteUtilsTest {
             statement.executeUpdate(sql);
         }
 
-        sql = "INSERT INTO datetest VALUES (null, 1385502209380, datetime('now'));";
+        sql = "INSERT INTO datetest VALUES (null, 1385502209380, DATETIME(current_timestamp, 'localtime'));";
         try (
                 final Connection con = ctx.getBean(SqliteDataSourceProvider.class).getDataSource().getConnection();
                 final Statement statement = con.createStatement();) {
@@ -63,7 +64,7 @@ public class SqliteUtilsTest {
         }
 
         sql = "SELECT change_time, last_modified FROM datetest where id=1;";
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",new Locale("pl","PL"));
         try (final Connection con = ctx.getBean(SqliteDataSourceProvider.class).getDataSource().getConnection();
                 final Statement stmt = con.createStatement();
                 final ResultSet rs = stmt.executeQuery(sql);) {
